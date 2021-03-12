@@ -1,18 +1,21 @@
 import React from "react";
-import style from './register.scss'
+import './register.scss'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from 'axios'
+import { noAuto } from "@fortawesome/fontawesome-svg-core";
 
 
 const initialState = {
-  fName: "",
-  lName: "",
-  userName: "",
+  name: "",
+  lastname: "",
+  username: "",
   email: "",
+  birthday: "",
   password: "",
   password2: "",
   nameError: "",
-  userNameError: "",
-  lNameError: "",
+  usernameError: "",
+  lastnameError: "",
   emailError: "",
   passwordError: "",
   passwordError2: ""
@@ -31,50 +34,57 @@ export default class ValiationForm extends React.Component {
   };
 
   validate = () => {
-    let fNameError = "";
+    let nameError = "";
     let emailError = "";
     let passwordError = "";
     let passwordError2 = "";
-    let lNameError = '';
-    let userNameError = "";
+    let lastnameError = '';
+    let usernameError = "";
 
-    if (!this.state.fName) {
-      fNameError = "name cannot be blank";
+    if (!this.state.name) {
+      nameError = "Name cannot be blank";
     }
-
-    if (!this.state.lName) {
-      lNameError = "name cannot be blank";
+    if (!this.state.lastname) {
+      lastnameError = "Last name cannot be blank";
     }
-
-    if (!this.state.userName) {
-      userNameError = "name cannot be blank";
+    if (!this.state.username) {
+      usernameError = "User name cannot be blank";
     }
-    // if (this.state.password.length <= 5) {
-    //   passwordError = 'password must be 6-10 caracters'
-    //   console.log('passsss', this.state.password.length)
-    // }
     if ((this.state.password.length >= 10) || this.state.password.length <= 5) {
-      passwordError = 'password must be 6-10 caracters'
-
+      passwordError = 'Password must be 6-10 caracters'
     }
-
     if (this.state.password !== this.state.password2) {
       passwordError2 = 'Type the same password'
     }
-
     // 
 
     if (!this.state.email.includes("@")) {
-      emailError = "invalid email";
+      emailError = "Invalid email";
     }
-
-    if (emailError || fNameError || passwordError || lNameError || userNameError || passwordError2) {
-      this.setState({ emailError, fNameError, passwordError, lNameError, userNameError, passwordError2 });
+    if (emailError || nameError || passwordError || lastnameError || usernameError || passwordError2) {
+      this.setState({ emailError, nameError, passwordError, lastnameError, usernameError, passwordError2 });
       return false;
     }
-
     return true;
   };
+
+
+
+  getUserData = () => {
+
+    const userData = {};
+    userData.name = this.state.name;
+    userData.lastname = this.state.lastname;
+    userData.username = this.state.username;
+    userData.email = this.state.email;
+    userData.birthday = this.state.birthday;
+    userData.password = this.state.password
+
+    axios.post('http://e056a6dd73cc.ngrok.io/api/register', userData)
+      .then(response => {
+        console.log('data', response)
+      })
+  }
 
   handleSubmit = event => {
     event.preventDefault();
@@ -83,54 +93,67 @@ export default class ValiationForm extends React.Component {
       console.log(this.state);
       // clear form
       this.setState(initialState);
-      console.log('passsss', this.state.password.length)
-
+      this.getUserData();
+      console.log('passsss', this.state)
     }
   };
 
   render() {
+    // this.getUserData();
     return (
       <form onSubmit={this.handleSubmit}>
         <div>
           <label>First Name:</label>
           <input
-            name="fName"
-            placeholder="First name"
-            value={this.state.fName}
+            name="name"
+            placeholder="Name"
+            value={this.state.name}
             onChange={this.handleChange}
           />
           <div style={{ fontSize: 12, color: "red" }}>
-            {this.state.fNameError}
+            {this.state.nameError}
           </div>
         </div>
         <div>
           <label>Last Name:</label>
           <input
-            name="lName"
+            name="lastname"
             placeholder="Last name"
-            value={this.state.lName}
+            value={this.state.lastname}
             onChange={this.handleChange}
           />
           <div style={{ fontSize: 12, color: "red" }}>
-            {this.state.lNameError}
+            {this.state.lastnameError}
           </div>
         </div>
         <div>
           <input
-            name="userName"
+            name="username"
             placeholder="User name"
-            value={this.state.userName}
+            value={this.state.username}
             onChange={this.handleChange}
           />
           <div style={{ fontSize: 12, color: "red" }}>
-            {this.state.userNameError}
+            {this.state.usernameError}
           </div>
         </div>
         <div>
           <input
             name="email"
-            placeholder="email"
+            placeholder="Email"
             value={this.state.email}
+            onChange={this.handleChange}
+          />
+          <div style={{ fontSize: 12, color: "red" }}>
+            {this.state.emailError}
+          </div>
+        </div>
+        <div>
+          <input
+            type='date'
+            name="birthday"
+            placeholder="Date of birth"
+            value={this.state.birthday}
             onChange={this.handleChange}
           />
           <div style={{ fontSize: 12, color: "red" }}>
@@ -141,7 +164,7 @@ export default class ValiationForm extends React.Component {
           <input
             type="password"
             name="password"
-            placeholder="password"
+            placeholder="Password"
             value={this.state.password}
             onChange={this.handleChange}
           />
@@ -153,7 +176,7 @@ export default class ValiationForm extends React.Component {
           <input
             type="password"
             name="password2"
-            placeholder="password2"
+            placeholder="Password"
             value={this.state.password2}
             onChange={this.handleChange}
           />
@@ -161,8 +184,22 @@ export default class ValiationForm extends React.Component {
             {this.state.passwordError2}
           </div>
         </div>
-        <button className='btn-primary' type="submit">submit</button>
+        <button className='submit-button' type="submit" onClick={this.getUserData}>submit</button>
       </form>
     );
   }
 }
+
+// name, lastname , username , email, password, birthday(viti-muaji-dita), phoneNo  ///// register
+
+// email , password
+
+
+
+// const getRecepies = async () => {
+//   const response = await fetch(`https://api.edamam.com/search?q=${submit}&app_id=${APP_ID}&app_key=${APP_KEY}`)
+//   const data = await response.json();
+//   const modifyArray = data.hits.map(obj => ({ ...obj, nrAmount: 1 }))
+//   setRecepies([...modifyArray])
+//   console.log('datassss', modifyArray)
+// }

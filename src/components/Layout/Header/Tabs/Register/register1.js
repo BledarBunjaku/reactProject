@@ -44,22 +44,6 @@ const Register = () => {
 
     datass();
 
-
-    //fetch data
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     return (
         <div className='register-form'>
             <h1>Signup</h1>

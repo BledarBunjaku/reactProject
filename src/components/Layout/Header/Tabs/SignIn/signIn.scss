@@ -1,0 +1,27 @@
+form {
+    .submit-form {
+        display: flex;
+        justify-content: space-between;
+        .forgot-password-button {
+            background-color: transparent;
+            border: none;
+            padding: 0;
+        }
+        .submit-button {
+            margin-top: 10px;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 50px;
+            font-size: 15px;
+            transition: 0.3s;
+            &:hover {
+                background-color: #fff1f4;
+                color: #f91942;
+            }
+            &:focus {
+                background-color: #f91942;
+                color: white;
+            }
+        }
+    }
+}

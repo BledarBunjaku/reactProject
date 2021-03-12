@@ -10,13 +10,13 @@ import Header from '../components/Layout/Header/header'
 import Home from '../components/Home/home'
 import About from '../components/About/about'
 import Footer from '../components/Layout/Footer/footer'
+import UserProfile from '../components/User-profile/userProfile'
 
 const App = () => {
     return (
-
-        <div className='container'>
-            <Router>
-                <Header />
+        <><Router>
+            <Header />
+            <div className='container-fluid'>
                 <Switch>
                     <Route path="/" exact>
                         <Home />
@@ -24,14 +24,16 @@ const App = () => {
                     <Route path="/about">
                         <About />
                     </Route>
+                    <Route path="/profile">
+                        <UserProfile />
+                    </Route>
                 </Switch>
                 <Footer />
-            </Router>
-        </div>
+            </div>
+        </Router>
+        </>
     )
-
 }
-
 export default App
 
 

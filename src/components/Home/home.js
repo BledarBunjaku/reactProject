@@ -1,8 +1,8 @@
 import React from 'react'
 import Style from './home.scss'
-const Home = () => {
+const Home = ({ name, germ }) => {
     return <main>
-        <h2>hellouuuu</h2>
+        <h2>{name}{germ}</h2>
     </main>
 }
 export default Home

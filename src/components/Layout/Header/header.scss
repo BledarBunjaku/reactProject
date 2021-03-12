@@ -7,4 +7,61 @@ Modal {
     width: 80vh;
     height: max-content;
     margin: 0 auto;
+    .btn-danger {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+.main-nav {
+    nav {
+        padding: 20px 45px;
+        // position: fixed;
+        // width: 100%;
+        // top: 0;
+        // left: 0;
+        background-color: white !important;
+        opacity: 0.9;
+        box-shadow: 0 2px 2px rgb(211, 209, 209);
+    }
+    .header-links {
+        background-color: white;
+
+        li {
+            font-size: 16px;
+            a {
+                color: #626262;
+                text-decoration: none;
+                transition: 0.4s;
+                border-radius: 50px;
+                font-size: 18px;
+                padding: 8px 16px;
+                line-height: 32px;
+                opacity: 1;
+                &:hover {
+                    background-color: #fff1f4;
+                    color: #f91942;
+                }
+                &:focus {
+                    background-color: #f91942;
+                    color: white;
+                }
+            }
+        }
+        .sign-up button {
+            border: none;
+            padding: 8px 18px;
+            border-radius: 50px;
+            font-size: 15px;
+            transition: 0.3s;
+            &:hover {
+                background-color: #fff1f4;
+                color: #f91942;
+            }
+            &:focus {
+                background-color: #f91942;
+                color: white;
+            }
+        }
+    }
 }
