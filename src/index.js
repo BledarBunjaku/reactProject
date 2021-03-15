@@ -4,7 +4,8 @@ import './index.css';
 import App from '../src/container/App';
 import reportWebVitals from './reportWebVitals';
 // import Register from './components/Layout/Header/Tabs/Register/register'
-import Headerr from './components/headerrr/headerr'
+// import Headerr from './components/headerrr/headerr'
+import Modal from './components/modal/modal'
 
 ReactDOM.render(
   <React.StrictMode>

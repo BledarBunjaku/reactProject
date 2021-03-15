@@ -1,0 +1,21 @@
+.backdrop {
+    position: fixed;
+    background-color: rgba(22, 22, 22, 0.5);
+    width: 100vw;
+    height: 100vh;
+    left: 0;
+    top: 0;
+    z-index: 10;
+}
+
+.modal-layout {
+    top: 5%;
+    position: relative;
+    max-width: 500px;
+    min-width: 270px;
+    height: max-content;
+    max-height: 90vh;
+    overflow-y: scroll;
+    margin: 0 auto;
+    background-color: rgb(233, 230, 230);
+}

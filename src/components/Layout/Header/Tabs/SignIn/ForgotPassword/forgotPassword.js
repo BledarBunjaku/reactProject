@@ -85,7 +85,7 @@ export default class ForgotPassowrd extends React.Component {
 
                 let userData = {};
                 userData.email = this.state.email;
-                axios.post('http://e056a6dd73cc.ngrok.io/api/checkMail', userData)
+                axios.post('http://9b17d15735c6.ngrok.io/api/checkMail', userData)
                     .then(response => {
                         console.log('data', response)
                         if (response.data.message) {
@@ -104,7 +104,11 @@ export default class ForgotPassowrd extends React.Component {
                             })
                         }
                     })
-                console.log('passsss', this.state)
+                    .catch(err => {
+                        this.setState({ emailError: 'Please, register first!' })
+                        console.log('passsss', this.state)
+                    })
+
             }
             return
         }
@@ -129,7 +133,7 @@ export default class ForgotPassowrd extends React.Component {
             let userData = {};
             userData.password = this.state.password;
             userData.email = this.state.email;
-            axios.post('http://e056a6dd73cc.ngrok.io/api/changePassword', userData)
+            axios.post('http://9308545f0329.ngrok.io/api/changePassword', userData)
                 .then(response => {
                     console.log('data', response)
                 })

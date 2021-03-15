@@ -6,10 +6,11 @@ import {
     Link
 } from "react-router-dom";
 import './header.scss'
-import Modal from 'react-modal'
+// import Modal from 'react-modal'
 import Tabs from '../Header/Tabs/tabs'
+import Modal from '../../modal/modal'
 
-Modal.setAppElement('#root')
+// Modal.setAppElement('#root')
 
 const Header = (props) => {
 
@@ -51,15 +52,24 @@ const Header = (props) => {
                 </li>
             </ul>
             <form className="form-inline my-2 my-lg-0">
-                <div className='sign-up'><button className="my-2 my-sm-0" onClick={(e) => showModal(e)} ><FontAwesomeIcon className='mr-1' icon={faSignInAlt} />Sign Up</button></div>
+                {props.userData.user ? <div className='sign-up'><button className="my-2 my-sm-0"  ><Link to="/profile"><FontAwesomeIcon className='mr-1' icon={faSignInAlt} />User Profile</Link></button></div>
+                    : <div className='sign-up'><button className="my-2 my-sm-0" onClick={(e) => showModal(e)} ><FontAwesomeIcon className='mr-1' icon={faSignInAlt} />Sign Up</button></div>}
+
             </form>
         </div>
     </nav>
         <div className='modal-register-signin'>
-            <Modal isOpen={modal} onRequestClose={() => setModal(false)}>
+            {/* <Modal isOpen={modal} onRequestClose={() => setModal(false)}>
                 <button className='d-block btn-danger rounded ml-auto' onClick={() => setModal(false)}>x</button>
                 <Tabs />
-            </Modal>
+            </Modal> */}
+            {modal ? <Modal >
+                <button onClick={() => { setModal(false) }}>X</button>
+                <Tabs />
+            </Modal> : null}
+
+
+
         </div>
     </div>
 }

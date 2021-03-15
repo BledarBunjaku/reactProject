@@ -80,7 +80,7 @@ export default class ValiationForm extends React.Component {
     userData.birthday = this.state.birthday;
     userData.password = this.state.password
 
-    axios.post('http://e056a6dd73cc.ngrok.io/api/register', userData)
+    axios.post('http://9b17d15735c6.ngrok.io/api/register', userData)
       .then(response => {
         console.log('data', response)
       })
@@ -184,7 +184,7 @@ export default class ValiationForm extends React.Component {
             {this.state.passwordError2}
           </div>
         </div>
-        <button className='submit-button' type="submit" onClick={this.getUserData}>submit</button>
+        <button className='submit-button' type="submit" >submit</button>
       </form>
     );
   }

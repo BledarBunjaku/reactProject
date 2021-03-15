@@ -1,11 +1,8 @@
 import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './signIn.scss'
-import ForgotPassowrd from './ForgotPassword/forgotPassword'
 import axios from 'axios'
-import Modal from 'react-modal'
 
-// Modal.setAppElement('#root')
 
 const initialState = {
     email: "",
@@ -51,11 +48,14 @@ export default class SignIn extends React.Component {
         const userData = {};
         userData.email = this.state.email;
         userData.password = this.state.password;
-        axios.post('http://e056a6dd73cc.ngrok.io/api/login', userData)
+        axios.post('http://9b17d15735c6.ngrok.io/api/login', userData)
             .then(response => {
-                console.log('data', response)
+                localStorage.setItem('token', response.data.token)
+                console.log('dataaaaa', response)
             })
     }
+
+    // localStorage.setItem('token', response.data.token)
 
     handleSubmit = event => {
         event.preventDefault();
@@ -76,6 +76,8 @@ export default class SignIn extends React.Component {
     }
 
     render() {
+
+        console.log('propssssssss', this.props)
         return (<div><form  >
             <div>
                 <input
@@ -101,13 +103,12 @@ export default class SignIn extends React.Component {
                 </div>
             </div>
             <div className='submit-form'>
-                <button className='forgot-password-button' onClick={this.setModal}>Forgot password?</button>
+                <button className='forgot-password-button' onClick={(e) => this.props.open(e)}>Forgot password?</button>
                 <button className='submit-button' onClick={this.handleSubmit}>Submit</button>
             </div>
         </form>
-            <Modal isOpen={this.state.isOpenModal} onRequestClose={() => this.setState({ isOpenModal: false })}>
-                <button onClick={() => { this.setState({ isOpenModal: false }) }} >X</button>
-                <ForgotPassowrd />
-            </Modal></div>)
+        </div >)
+
+
     }
 }

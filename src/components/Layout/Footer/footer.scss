@@ -1,0 +1,26 @@
+footer {
+    a,
+    li {
+        text-decoration: none;
+        color: #626262;
+        font-size: 16px;
+        &:hover {
+            text-decoration: none;
+            color: #626262;
+        }
+    }
+    .social-links {
+        max-width: 140px;
+        min-width: 124px;
+        justify-content: space-between;
+        color: #5b5b5b;
+    }
+    p {
+        font-size: 21px;
+        font-weight: bold;
+        color: #333;
+    }
+    li {
+        overflow-x: hidden;
+    }
+}
