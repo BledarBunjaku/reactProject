@@ -14,7 +14,7 @@ import UserProfile from '../components/User-profile/userProfile'
 import axios from 'axios'
 import OfferHelp from '../components/Offer_help/offerHelp'
 
-axios.defaults.baseURL = "http://d2959f5ce019.ngrok.io/api/"
+axios.defaults.baseURL = "http://51eafacec552.ngrok.io/api/"
 // axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token')
 
 
@@ -22,36 +22,46 @@ axios.defaults.baseURL = "http://d2959f5ce019.ngrok.io/api/"
 const App = () => {
 
     const [userData, setUserData] = useState()
-    const [tokenUse, setTokenUse] = useState()
+    const [tokenUse, setTokenUse] = useState({})
 
-    let config = {};
-    const getToken = (token) => {
-        if (token)
-            config = {
-                headers: { Authorization: "Bearer  " + token }
 
-            }
-        else {
-            setUserData()
+    let getToken = (token) => {
+        let config = {
+            headers: { Authorization: "Bearer " + token }
         }
-        setTokenUse(config);
+        console.log("configgggg", config)
+        setTokenUse({ ...config })
+        if (!token) {
+            setUserData("")
+            return
+        }
 
     }
 
-    const handleUserData = () => {
-        axios.get('user', config)
+
+    useEffect(() => {
+        axios.get('user', tokenUse)
             .then(response => {
                 setUserData({ ...response.data })
                 console.log('thenResponse', response)
             })
             .catch(error => { console.log('errorrCatch', error) })
+    }, [tokenUse])
+
+    const handleUserData = () => {
+        // axios.get('user', config)
+        //     .then(response => {
+        //         setUserData({ ...response.data })
+        //         console.log('thenResponse', response)
+        //     })
+        //     .catch(error => { console.log('errorrCatch', error) })
     }
 
-    console.log('datasssssssssssssssss', config)
+    console.log('datasssssssssssssssss', tokenUse)
 
     return (
         <><Router>
-            <Header userData={userData} handleUserData={handleUserData} getToken={getToken} />
+            <Header userData={userData} getToken={getToken} />
             <div className='container-fluid'>
                 <Switch>
                     <Route path="/" exact>
@@ -74,7 +84,7 @@ const App = () => {
                 <Footer />
             </div>
         </Router>
-            {/* <button onClick={handleUserData} ></button> */}
+            <button onClick={getToken} ></button>
         </>
     )
 }

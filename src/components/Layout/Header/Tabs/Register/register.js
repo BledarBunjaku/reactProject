@@ -94,7 +94,6 @@ export default class ValiationForm extends React.Component {
       // clear form
       this.setState(initialState);
       this.getUserData();
-      console.log('passsss', this.state)
     }
   };
 

@@ -79,7 +79,7 @@ const Header = (props) => {
             </Modal> */}
             {modal ? <Modal >
                 <button className='close-modal' onClick={() => { setModal(false) }}>X</button>
-                <Tabs handleUserData={props.handleUserData} getToken={props.getToken} />
+                <Tabs getToken={props.getToken} />
             </Modal> : null}
 
 

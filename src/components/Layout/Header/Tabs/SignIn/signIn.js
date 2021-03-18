@@ -50,12 +50,11 @@ export default class SignIn extends React.Component {
             .then(response => {
                 // localStorage.setItem('token', response.data.token)
                 this.props.getToken(response.data.token)
-                console.log('dataaaaa', response)
-                this.props.handleUserData();
+                console.log('dataaaaaaaaaaaaaaaaaaaa', response.data.token)
             })
     }
 
-    // localStorage.setItem('token', response.data.token)
+
 
     handleSubmit = event => {
         event.preventDefault();
@@ -64,7 +63,6 @@ export default class SignIn extends React.Component {
             console.log(this.state);
             this.setState(initialState);
             this.getUserData();
-            console.log('passsss', this.state)
         }
     };
 

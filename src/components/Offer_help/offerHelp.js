@@ -85,12 +85,9 @@ export default class OfferHelp extends React.Component {
 
 
 
-    gettag = () => {
-        axios.post("seekHelp/services/13")
-    }
 
     render() {
-        this.gettag();
+
         console.log("asasssssssssssssssss", this.props.token)
         // 
         return (<div className='offer-help'> <form >
