@@ -12,29 +12,46 @@ import About from '../components/About/about'
 import Footer from '../components/Layout/Footer/footer'
 import UserProfile from '../components/User-profile/userProfile'
 import axios from 'axios'
+import OfferHelp from '../components/Offer_help/offerHelp'
 
-axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token')
+axios.defaults.baseURL = "http://d2959f5ce019.ngrok.io/api/"
+// axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token')
+
+
 
 const App = () => {
 
-    const [userData, setUserData] = useState({ user: '' })
+    const [userData, setUserData] = useState()
+    const [tokenUse, setTokenUse] = useState()
 
-    useEffect(() => {
+    let config = {};
+    const getToken = (token) => {
+        if (token)
+            config = {
+                headers: { Authorization: "Bearer  " + token }
 
-        axios.get('http://9b17d15735c6.ngrok.io/api/user')
+            }
+        else {
+            setUserData()
+        }
+        setTokenUse(config);
+
+    }
+
+    const handleUserData = () => {
+        axios.get('user', config)
             .then(response => {
-                setUserData({ user: response.data })
-                console.log('datasssssssssssssssss', userData)
+                setUserData({ ...response.data })
+                console.log('thenResponse', response)
             })
-            .catch(error => { console.log('errorr', error) })
-    })
+            .catch(error => { console.log('errorrCatch', error) })
+    }
 
-
-    console.log('datasssssssssssssssss', userData)
+    console.log('datasssssssssssssssss', config)
 
     return (
         <><Router>
-            <Header userData={userData} />
+            <Header userData={userData} handleUserData={handleUserData} getToken={getToken} />
             <div className='container-fluid'>
                 <Switch>
                     <Route path="/" exact>
@@ -43,8 +60,11 @@ const App = () => {
                     <Route path="/about">
                         <About />
                     </Route>
-                    {userData.user ? <Route path="/profile">
-                        <UserProfile />
+                    <Route path="/offer">
+                        <OfferHelp userData={userData} token={tokenUse} />
+                    </Route>
+                    {userData ? <Route path="/profile"  >
+                        <UserProfile userData={userData} />
                     </Route> :
                         <Route path="/profile">
                             <h1>404 Not found!</h1>
@@ -54,6 +74,7 @@ const App = () => {
                 <Footer />
             </div>
         </Router>
+            {/* <button onClick={handleUserData} ></button> */}
         </>
     )
 }

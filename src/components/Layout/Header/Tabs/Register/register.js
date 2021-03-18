@@ -80,7 +80,7 @@ export default class ValiationForm extends React.Component {
     userData.birthday = this.state.birthday;
     userData.password = this.state.password
 
-    axios.post('http://9b17d15735c6.ngrok.io/api/register', userData)
+    axios.post('register', userData)
       .then(response => {
         console.log('data', response)
       })
@@ -101,91 +101,92 @@ export default class ValiationForm extends React.Component {
   render() {
     // this.getUserData();
     return (
-      <form onSubmit={this.handleSubmit}>
-        <div>
-          <label>First Name:</label>
-          <input
-            name="name"
-            placeholder="Name"
-            value={this.state.name}
-            onChange={this.handleChange}
-          />
-          <div style={{ fontSize: 12, color: "red" }}>
-            {this.state.nameError}
+      <div className='register'>
+        <form onSubmit={this.handleSubmit}>
+          <div>
+            <label>First Name:</label>
+            <input
+              name="name"
+              placeholder="Name"
+              value={this.state.name}
+              onChange={this.handleChange}
+            />
+            <div style={{ fontSize: 12, color: "red" }}>
+              {this.state.nameError}
+            </div>
           </div>
-        </div>
-        <div>
-          <label>Last Name:</label>
-          <input
-            name="lastname"
-            placeholder="Last name"
-            value={this.state.lastname}
-            onChange={this.handleChange}
-          />
-          <div style={{ fontSize: 12, color: "red" }}>
-            {this.state.lastnameError}
+          <div>
+            <label>Last Name:</label>
+            <input
+              name="lastname"
+              placeholder="Last name"
+              value={this.state.lastname}
+              onChange={this.handleChange}
+            />
+            <div style={{ fontSize: 12, color: "red" }}>
+              {this.state.lastnameError}
+            </div>
           </div>
-        </div>
-        <div>
-          <input
-            name="username"
-            placeholder="User name"
-            value={this.state.username}
-            onChange={this.handleChange}
-          />
-          <div style={{ fontSize: 12, color: "red" }}>
-            {this.state.usernameError}
+          <div>
+            <input
+              name="username"
+              placeholder="User name"
+              value={this.state.username}
+              onChange={this.handleChange}
+            />
+            <div style={{ fontSize: 12, color: "red" }}>
+              {this.state.usernameError}
+            </div>
           </div>
-        </div>
-        <div>
-          <input
-            name="email"
-            placeholder="Email"
-            value={this.state.email}
-            onChange={this.handleChange}
-          />
-          <div style={{ fontSize: 12, color: "red" }}>
-            {this.state.emailError}
+          <div>
+            <input
+              name="email"
+              placeholder="Email"
+              value={this.state.email}
+              onChange={this.handleChange}
+            />
+            <div style={{ fontSize: 12, color: "red" }}>
+              {this.state.emailError}
+            </div>
           </div>
-        </div>
-        <div>
-          <input
-            type='date'
-            name="birthday"
-            placeholder="Date of birth"
-            value={this.state.birthday}
-            onChange={this.handleChange}
-          />
-          <div style={{ fontSize: 12, color: "red" }}>
-            {this.state.emailError}
+          <div>
+            <input
+              type='date'
+              name="birthday"
+              placeholder="Date of birth"
+              value={this.state.birthday}
+              onChange={this.handleChange}
+            />
+            <div style={{ fontSize: 12, color: "red" }}>
+              {this.state.emailError}
+            </div>
           </div>
-        </div>
-        <div>
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={this.state.password}
-            onChange={this.handleChange}
-          />
-          <div style={{ fontSize: 12, color: "red" }}>
-            {this.state.passwordError}
+          <div>
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={this.state.password}
+              onChange={this.handleChange}
+            />
+            <div style={{ fontSize: 12, color: "red" }}>
+              {this.state.passwordError}
+            </div>
           </div>
-        </div>
-        <div>
-          <input
-            type="password"
-            name="password2"
-            placeholder="Password"
-            value={this.state.password2}
-            onChange={this.handleChange}
-          />
-          <div style={{ fontSize: 12, color: "red" }}>
-            {this.state.passwordError2}
+          <div>
+            <input
+              type="password"
+              name="password2"
+              placeholder="Password"
+              value={this.state.password2}
+              onChange={this.handleChange}
+            />
+            <div style={{ fontSize: 12, color: "red" }}>
+              {this.state.passwordError2}
+            </div>
           </div>
-        </div>
-        <button className='submit-button' type="submit" >submit</button>
-      </form>
+          <button className='submit-button' type="submit" >submit</button>
+        </form></div>
     );
   }
 }

@@ -5,7 +5,7 @@ import SignIn from './SignIn/signIn'
 import Register from './Register/register'
 import ForgotPassword from './SignIn/ForgotPassword/forgotPassword'
 
-const Tabs = () => {
+const Tabs = (props) => {
 
     const [showPassword, setShowPassword] = useState(false)
 
@@ -23,15 +23,13 @@ const Tabs = () => {
             <li className="nav-item">
                 <a className="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Register</a>
             </li>
-            {/* {showPassword ? <li className="nav-item">
-                <a className="nav-link" id="pills-password-tab" data-toggle="pill" href="#pills-password" role="tab" aria-controls="pills-password" aria-selected="false">Forgot password</a>
-            </li> : null} */}
+
 
         </ul>
             <div className="tab-content" id="pills-tabContent">
-                <div className="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab"><SignIn open={(e) => showPasswordTab(e)}></SignIn></div>
+                <div className="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab"><SignIn handleUserData={props.handleUserData} open={(e) => showPasswordTab(e)} getToken={props.getToken}></SignIn></div>
                 <div className="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab"><Register></Register></div>
-                {/* <div className="tab-pane fade" id="pills-password" role="tabpanel" aria-labelledby="pills-password-tab"><ForgotPassword ></ForgotPassword></div> */}
+
             </div>
         </div>)
     } else {

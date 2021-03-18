@@ -10,12 +10,12 @@
 
 .modal-layout {
     top: 5%;
+    padding: 7px;
     position: relative;
     max-width: 500px;
     min-width: 270px;
     height: max-content;
     max-height: 90vh;
-    overflow-y: scroll;
     margin: 0 auto;
     background-color: rgb(233, 230, 230);
 }

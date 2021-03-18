@@ -3,7 +3,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './signIn.scss'
 import axios from 'axios'
 
-
 const initialState = {
     email: "",
     password: "",
@@ -15,7 +14,6 @@ const initialState = {
 export default class SignIn extends React.Component {
 
     state = initialState;
-
 
     handleChange = event => {
         this.setState({
@@ -48,10 +46,12 @@ export default class SignIn extends React.Component {
         const userData = {};
         userData.email = this.state.email;
         userData.password = this.state.password;
-        axios.post('http://9b17d15735c6.ngrok.io/api/login', userData)
+        axios.post('login', userData)
             .then(response => {
-                localStorage.setItem('token', response.data.token)
+                // localStorage.setItem('token', response.data.token)
+                this.props.getToken(response.data.token)
                 console.log('dataaaaa', response)
+                this.props.handleUserData();
             })
     }
 
@@ -77,7 +77,6 @@ export default class SignIn extends React.Component {
 
     render() {
 
-        console.log('propssssssss', this.props)
         return (<div><form  >
             <div>
                 <input
@@ -108,7 +107,6 @@ export default class SignIn extends React.Component {
             </div>
         </form>
         </div >)
-
 
     }
 }

@@ -11,7 +11,7 @@ const Footer = () => {
 
 
     return (
-        <footer className='row bg-light' >
+        <footer className='row bg-light mb-5 mx-0' >
             <div className='col-md-3  footer__items rounded pt-3'>
                 <p>Contact Us</p>
                 <ul className=' navbar-nav'>
