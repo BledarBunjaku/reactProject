@@ -1,8 +1,11 @@
 import React from 'react'
+import Info from '../Info/Info'
 
 const About = () => {
 
-    return <h2>About</h2>
+    return (
+        <Info />
+    )
 
 }
 

@@ -52,7 +52,7 @@ const App = () => {
     return (
         <><Router>
             <Header userData={userData} handleUserData={handleUserData} getToken={getToken} />
-            <div className='container-fluid'>
+            {/* <div className='container-fluid'> */}
                 <Switch>
                     <Route path="/" exact>
                         <Home />
@@ -72,7 +72,7 @@ const App = () => {
 
                 </Switch>
                 <Footer />
-            </div>
+            {/* </div> */}
         </Router>
             {/* <button onClick={handleUserData} ></button> */}
         </>
