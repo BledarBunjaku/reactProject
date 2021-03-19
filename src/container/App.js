@@ -14,7 +14,7 @@ import UserProfile from '../components/User-profile/userProfile'
 import axios from 'axios'
 import OfferHelp from '../components/Offer_help/offerHelp'
 
-axios.defaults.baseURL = "http://51eafacec552.ngrok.io/api/"
+axios.defaults.baseURL = "http://73227bda47f6.ngrok.io/api/"
 // axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token')
 
 
@@ -33,9 +33,7 @@ const App = () => {
         setTokenUse({ ...config })
         if (!token) {
             setUserData("")
-            return
         }
-
     }
 
 
@@ -84,7 +82,7 @@ const App = () => {
                 <Footer />
             </div>
         </Router>
-            <button onClick={getToken} ></button>
+            {/* <button onClick={getToken} ></button> */}
         </>
     )
 }

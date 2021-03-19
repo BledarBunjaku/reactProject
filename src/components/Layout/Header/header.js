@@ -26,8 +26,9 @@ const Header = (props) => {
         // props.handleUserData();
     }
 
-    const showModal = (e) => {
-        e.preventDefault();
+    const showModal = (e = "") => {
+        if (e) { e.preventDefault(); }
+
         setModal(!modal);
     }
 
@@ -78,8 +79,8 @@ const Header = (props) => {
                 <Tabs />
             </Modal> */}
             {modal ? <Modal >
-                <button className='close-modal' onClick={() => { setModal(false) }}>X</button>
-                <Tabs getToken={props.getToken} />
+                <button className='close-modal d-block' onClick={() => { setModal(false) }}>X</button>
+                <Tabs getToken={props.getToken} showModal={showModal} />
             </Modal> : null}
 
 

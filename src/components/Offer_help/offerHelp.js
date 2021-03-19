@@ -190,9 +190,11 @@ export default class OfferHelp extends React.Component {
                     {/* {this.state.lastnameError} */}
                 </div>
             </div>
-            <button onClick={this.handleSubmit} className='submit-button' type="submit" >SUBMIT</button>
-        </form><button onClick={(e) => { this.handle(e) }}>nameee</button></div>
+            <button onClick={this.handleSubmit} className='submit-button' type="submit" >Submit</button>
+        </form></div>
         )
     }
 }
 
+
+{/* <button onClick={(e) => { this.handle(e) }}>nameee</button> */ }

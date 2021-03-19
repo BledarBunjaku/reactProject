@@ -51,6 +51,7 @@ export default class SignIn extends React.Component {
                 // localStorage.setItem('token', response.data.token)
                 this.props.getToken(response.data.token)
                 console.log('dataaaaaaaaaaaaaaaaaaaa', response.data.token)
+                this.props.showModal()
             })
     }
 

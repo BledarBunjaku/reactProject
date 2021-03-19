@@ -184,22 +184,8 @@ export default class ValiationForm extends React.Component {
               {this.state.passwordError2}
             </div>
           </div>
-          <button className='submit-button' type="submit" >submit</button>
+          <button className='submit-button' type="submit" >Submit</button>
         </form></div>
     );
   }
 }
-
-// name, lastname , username , email, password, birthday(viti-muaji-dita), phoneNo  ///// register
-
-// email , password
-
-
-
-// const getRecepies = async () => {
-//   const response = await fetch(`https://api.edamam.com/search?q=${submit}&app_id=${APP_ID}&app_key=${APP_KEY}`)
-//   const data = await response.json();
-//   const modifyArray = data.hits.map(obj => ({ ...obj, nrAmount: 1 }))
-//   setRecepies([...modifyArray])
-//   console.log('datassss', modifyArray)
-// }
