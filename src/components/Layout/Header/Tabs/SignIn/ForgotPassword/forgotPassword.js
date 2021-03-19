@@ -85,7 +85,7 @@ export default class ForgotPassowrd extends React.Component {
 
                 let userData = {};
                 userData.email = this.state.email;
-                axios.post('checkMail', userData)
+                axios.post(`${process.env.SOURCE_URL}/api/checkMail`, userData)
                     .then(response => {
                         console.log('data', response)
                         if (response.data.message) {
@@ -133,7 +133,7 @@ export default class ForgotPassowrd extends React.Component {
             let userData = {};
             userData.password = this.state.password;
             userData.email = this.state.email;
-            axios.post('changePassword', userData)
+            axios.post(`${process.env.SOURCE_URL}/api/changePassword`, userData)
                 .then(response => {
                     console.log('data', response)
                 })

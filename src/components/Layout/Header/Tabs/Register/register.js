@@ -80,7 +80,7 @@ export default class ValiationForm extends React.Component {
     userData.birthday = this.state.birthday;
     userData.password = this.state.password
 
-    axios.post('register', userData)
+    axios.post(`${process.env.URL_SOURCE}/register`, userData)
       .then(response => {
         console.log('data', response)
       })

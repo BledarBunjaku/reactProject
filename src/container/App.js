@@ -59,28 +59,28 @@ const App = () => {
 
     return (
         <><Router>
-            <Header userData={userData} getToken={getToken} />
-            <div className='container-fluid'>
-                <Switch>
-                    <Route path="/" exact>
-                        <Home />
-                    </Route>
-                    <Route path="/about">
-                        <About />
-                    </Route>
-                    <Route path="/offer">
-                        <OfferHelp userData={userData} token={tokenUse} />
-                    </Route>
-                    {userData ? <Route path="/profile"  >
-                        <UserProfile userData={userData} />
-                    </Route> :
-                        <Route path="/profile">
-                            <h1>404 Not found!</h1>
-                        </Route>}
+            <Header userData={userData} handleUserData={handleUserData} getToken={getToken} />
+            {/* <div className='container-fluid'> */}
+            <Switch>
+                <Route path="/" exact>
+                    <Home />
+                </Route>
+                <Route path="/about">
+                    <About />
+                </Route>
+                <Route path="/offer">
+                    <OfferHelp userData={userData} token={tokenUse} />
+                </Route>
+                {userData ? <Route path="/profile"  >
+                    <UserProfile userData={userData} />
+                </Route> :
+                    <Route path="/profile">
+                        <h1>404 Not found!</h1>
+                    </Route>}
 
-                </Switch>
-                <Footer />
-            </div>
+            </Switch>
+            <Footer />
+            {/* </div> */}
         </Router>
             {/* <button onClick={getToken} ></button> */}
         </>
