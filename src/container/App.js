@@ -109,8 +109,5 @@ const App = () => {
 }
 export default App
 
-
-
-
 // axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token')
 
