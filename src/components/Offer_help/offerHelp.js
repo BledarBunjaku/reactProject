@@ -166,11 +166,8 @@ export default class OfferHelp extends React.Component {
                 <label for="jobs">Choose a car:</label>
 
                 <select name="job_id" onChange={this.handleChange}>
-                    {this.state.jobs ? this.state.jobs.map(job => <option value={job.id}>{job.name}</option>) : null}  <option value="electric">electric</option>
+                    {this.state.jobs ? this.state.jobs.map(job => <option value={job.id}>{job.name}</option>) : null}
 
-                    {/* <option value="water">water</option>
-                    <option value="fridge">fridge</option>
-                    <option value="dishwasher">dishwasher</option> */}
                 </select>
             </div>
 

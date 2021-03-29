@@ -2,23 +2,24 @@ import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './signIn.scss'
 import axios from 'axios'
+import { connect } from 'react-redux'
 
 const initialState = {
     email: "",
     password: "",
     emailError: "",
-    passwordError: "",
-    isOpenModal: false
+    passwordError: ""
 };
 
-export default class SignIn extends React.Component {
+class SignIn extends React.Component {
 
     state = initialState;
 
     handleChange = event => {
-        this.setState({
-            [event.target.name]: event.target.value
-        });
+
+        const datas = event.target.name;
+        let values = event.target.value;
+        this.props.dispatch({ type: "HANDLECHANGE", data: datas, value: values })
     };
 
     validate = () => {
@@ -35,7 +36,10 @@ export default class SignIn extends React.Component {
         }
 
         if (emailError || passwordError) {
-            this.setState({ emailError, passwordError });
+            // this.setState({ emailError, passwordError });
+
+
+            this.props.dispatch({ type: "ERROR_INPUT", emailError, passwordError })
             return false;
         }
 
@@ -46,9 +50,10 @@ export default class SignIn extends React.Component {
         const userData = {};
         userData.email = this.state.email;
         userData.password = this.state.password;
-        axios.post(`${process.env.URL_SOURCE}/login`, userData)
+
+        axios.post(`login`, userData)
             .then(response => {
-                // localStorage.setItem('token', response.data.token)
+                localStorage.setItem('token', response.data.token)
                 this.props.getToken(response.data.token)
                 console.log('dataaaaaaaaaaaaaaaaaaaa', response.data.token)
                 this.props.showModal()
@@ -67,25 +72,22 @@ export default class SignIn extends React.Component {
         }
     };
 
-    setModal = (e) => {
-        e.preventDefault();
-        const newObj = this.state;
-        newObj.isOpenModal = true
-        this.setState({ ...newObj })
-    }
-
     render() {
 
+        console.log("emaillllllllllll", this.props.state.email)
+        console.log("emaillllllllllll", this.props.state.password)
+        console.log("passwordError", this.props.state.passwordError)
+        console.log("passwordError", this.props.state.emailError)
         return (<div><form  >
             <div>
                 <input
                     name="email"
                     placeholder="Email"
-                    value={this.state.email}
+                    value={this.props.state.email}
                     onChange={this.handleChange}
                 />
                 <div style={{ fontSize: 12, color: "red" }}>
-                    {this.state.emailError}
+                    {this.props.state.emailError}
                 </div>
             </div>
             <div>
@@ -93,11 +95,11 @@ export default class SignIn extends React.Component {
                     type="password"
                     name="password"
                     placeholder="Password"
-                    value={this.state.password}
+                    value={this.props.state.password}
                     onChange={this.handleChange}
                 />
                 <div style={{ fontSize: 12, color: "red" }}>
-                    {this.state.passwordError}
+                    {this.props.state.passwordError}
                 </div>
             </div>
             <div className='submit-form'>
@@ -109,3 +111,9 @@ export default class SignIn extends React.Component {
 
     }
 }
+
+const mapStateToProps = state => {
+    return { state }
+}
+
+export default connect(mapStateToProps)(SignIn)

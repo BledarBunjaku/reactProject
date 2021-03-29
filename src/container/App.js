@@ -13,16 +13,23 @@ import Footer from '../components/Layout/Footer/footer'
 import UserProfile from '../components/User-profile/userProfile'
 import axios from 'axios'
 import OfferHelp from '../components/Offer_help/offerHelp'
+import { createStore } from 'redux'
+import { Provider } from 'react-redux';
+import reducer from '../store/reducer'
 
-axios.defaults.baseURL = "http://73227bda47f6.ngrok.io/api/"
-// axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token')
 
+axios.defaults.baseURL = "http://8f2e874dcb9e.ngrok.io/api/"
+
+
+
+const store = createStore(reducer);
 
 
 const App = () => {
 
+
+    const [tokenUse, setTokenUse] = useState()
     const [userData, setUserData] = useState()
-    const [tokenUse, setTokenUse] = useState({})
 
 
     let getToken = (token) => {
@@ -36,15 +43,23 @@ const App = () => {
         }
     }
 
+    if (!tokenUse && localStorage.getItem("token")) {
+        getToken(localStorage.getItem("token"))
+    }
+
 
     useEffect(() => {
-        axios.get('user', tokenUse)
+        axios.get(`user`, tokenUse)
             .then(response => {
                 setUserData({ ...response.data })
                 console.log('thenResponse', response)
             })
             .catch(error => { console.log('errorrCatch', error) })
     }, [tokenUse])
+
+
+
+    console.log("testtttttttttttttttttt", process.env.URL_SOURCE)
 
     const handleUserData = () => {
         // axios.get('user', config)
@@ -54,13 +69,20 @@ const App = () => {
         //     })
         //     .catch(error => { console.log('errorrCatch', error) })
     }
+    const setlocalstorage = () => {
+        localStorage.setItem("name", "10")
+        console.log(localStorage.getItem("name"))
+    }
+    const deletelocalstorage = () => {
+        localStorage.clear()
+        console.log("cleared")
+    }
 
     console.log('datasssssssssssssssss', tokenUse)
 
     return (
-        <><Router>
+        <Provider store={store}><Router>
             <Header userData={userData} handleUserData={handleUserData} getToken={getToken} />
-            {/* <div className='container-fluid'> */}
             <Switch>
                 <Route path="/" exact>
                     <Home />
@@ -77,15 +99,18 @@ const App = () => {
                     <Route path="/profile">
                         <h1>404 Not found!</h1>
                     </Route>}
-
             </Switch>
             <Footer />
-            {/* </div> */}
         </Router>
-            {/* <button onClick={getToken} ></button> */}
-        </>
+            <button onClick={setlocalstorage}>localstorage</button>
+            <button onClick={deletelocalstorage}>deletelocalstorage</button>
+        </Provider>
     )
 }
 export default App
 
+
+
+
+// axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token')
 

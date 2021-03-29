@@ -85,7 +85,7 @@ export default class ForgotPassowrd extends React.Component {
 
                 let userData = {};
                 userData.email = this.state.email;
-                axios.post(`${process.env.SOURCE_URL}/api/checkMail`, userData)
+                axios.post(`checkMail`, userData)
                     .then(response => {
                         console.log('data', response)
                         if (response.data.message) {
