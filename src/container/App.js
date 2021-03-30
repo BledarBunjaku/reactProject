@@ -7,22 +7,28 @@ import {
     Link
 } from "react-router-dom";
 import Header from '../components/Layout/Header/header'
-import Home from '../components/Home/home'
-import About from '../components/About/about'
+import Home from '../Pages/Home/home'
+import About from '../Pages/About/about'
 import Footer from '../components/Layout/Footer/footer'
-import UserProfile from '../components/User-profile/userProfile'
+import UserProfile from '../Pages/User profile/userProfile'
 import axios from 'axios'
-import OfferHelp from '../components/Offer_help/offerHelp'
-import { createStore } from 'redux'
+import OfferHelp from '../Pages/Offer help/offerHelp'
+import { combineReducers, createStore } from 'redux'
 import { Provider } from 'react-redux';
-import reducer from '../store/reducer'
+import store from '../Redux/store'
+// import loginReducer from '../Redux/loginReducer'
+// import registerReducer from '../Redux/registerReducer'
+// import '../store/reducer'
 
 
 axios.defaults.baseURL = "http://8f2e874dcb9e.ngrok.io/api/"
 
+// const reducers = combineReducers({
+//     loginReducer,
+//     registerReducer
+// })
 
-
-const store = createStore(reducer);
+// const store = createStore(reducers)
 
 
 const App = () => {

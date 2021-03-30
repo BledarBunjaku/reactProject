@@ -17,9 +17,12 @@ class SignIn extends React.Component {
 
     handleChange = event => {
 
-        const datas = event.target.name;
-        let values = event.target.value;
-        this.props.dispatch({ type: "HANDLECHANGE", data: datas, value: values })
+        const data = event.target.name;
+        let value = event.target.value;
+        console.log('Event target name: '+ data)
+        console.log('event target value: '+value)
+        // this.props.dispatch({ type: "HANDLECHANGE_LOGIN", data, value})
+        this.setState({[event.target.name]: event.target.value})
     };
 
     validate = () => {
@@ -50,6 +53,7 @@ class SignIn extends React.Component {
         const userData = {};
         userData.email = this.state.email;
         userData.password = this.state.password;
+       
 
         axios.post(`login`, userData)
             .then(response => {
@@ -65,9 +69,15 @@ class SignIn extends React.Component {
     handleSubmit = event => {
         event.preventDefault();
         const isValid = this.validate();
+        console.log('userData email: '+ this.state.email)
+        console.log('userData password: '+this.state.password)
         if (isValid) {
-            console.log(this.state);
-            this.setState(initialState);
+            //ktheje qysh u kon te dispatch
+            let emailError = "gabim";
+            let passwordError = "gabim";
+            const data = event.target.name;
+            let value = event.target.value;
+            this.props.dispatch({ type: "ERROR_INPUT", emailError, passwordError})
             this.getUserData();
         }
     };
@@ -78,7 +88,7 @@ class SignIn extends React.Component {
         console.log("emaillllllllllll", this.props.state.password)
         console.log("passwordError", this.props.state.passwordError)
         console.log("passwordError", this.props.state.emailError)
-        return (<div><form  >
+        return (<div><form>
             <div>
                 <input
                     name="email"
@@ -115,5 +125,6 @@ class SignIn extends React.Component {
 const mapStateToProps = state => {
     return { state }
 }
+
 
 export default connect(mapStateToProps)(SignIn)

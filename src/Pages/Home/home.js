@@ -1,7 +1,7 @@
 import React from 'react'
 import Style from './home.scss'
-import Hero from '../Hero/HeroComponent'
-import Info from '../Info/Info'
+import Hero from '../../components/Hero/HeroComponent'
+import Info from '../../components/Info/Info'
 
 
 const Home = ({ name, germ }) => {

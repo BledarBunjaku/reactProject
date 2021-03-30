@@ -3,6 +3,7 @@ import './register.scss'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios'
 import { noAuto } from "@fortawesome/fontawesome-svg-core";
+import { connect } from 'react-redux'
 
 
 const initialState = {
@@ -21,16 +22,16 @@ const initialState = {
   passwordError2: ""
 };
 
-export default class ValiationForm extends React.Component {
+class ValidationForm extends React.Component {
   state = initialState;
 
   handleChange = event => {
-    const isCheckbox = event.target.type === "checkbox";
-    this.setState({
-      [event.target.name]: isCheckbox
-        ? event.target.checked
-        : event.target.value
-    });
+    const data = event.target.name;
+    let value = event.target.value;
+    console.log('Event target name '+data)
+    console.log('event target values '+value)
+    // this.props.dispatch({ type: "HANDLECHANGE_REGISTER", data, value })
+    this.setState({[event.target.name]:event.target.value})
   };
 
   validate = () => {
@@ -51,7 +52,7 @@ export default class ValiationForm extends React.Component {
       usernameError = "User name cannot be blank";
     }
     if ((this.state.password.length >= 10) || this.state.password.length <= 5) {
-      passwordError = 'Password must be 6-10 caracters'
+      passwordError = 'Password must be 6-10 characters'
     }
     if (this.state.password !== this.state.password2) {
       passwordError2 = 'Type the same password'
@@ -62,7 +63,7 @@ export default class ValiationForm extends React.Component {
       emailError = "Invalid email";
     }
     if (emailError || nameError || passwordError || lastnameError || usernameError || passwordError2) {
-      this.setState({ emailError, nameError, passwordError, lastnameError, usernameError, passwordError2 });
+      // this.setState({ emailError, nameError, passwordError, lastnameError, usernameError, passwordError2 });
       return false;
     }
     return true;
@@ -80,7 +81,7 @@ export default class ValiationForm extends React.Component {
     userData.birthday = this.state.birthday;
     userData.password = this.state.password
 
-    axios.post(`${process.env.URL_SOURCE}/api/register`, userData)
+    axios.post(`/api/register`, userData)
       .then(response => {
         console.log('data', response)
       })
@@ -91,8 +92,17 @@ export default class ValiationForm extends React.Component {
     const isValid = this.validate();
     if (isValid) {
       console.log(this.state);
+      const data = event.target.name
+      let value = event.target.value
+      let nameError = "gabim";
+      let emailError = "gabim";
+      let passwordError = "gabim";
+      let passwordError2 = "gabim";
+      let lastnameError = "gabim";
+      let usernameError = "gabim";
       // clear form
       this.setState(initialState);
+      this.props.dispatch({type:"ERROR_INPUT", nameError, emailError, passwordError, passwordError2, lastnameError, usernameError})
       this.getUserData();
     }
   };
@@ -107,11 +117,11 @@ export default class ValiationForm extends React.Component {
             <input
               name="name"
               placeholder="Name"
-              value={this.state.name}
+              value={this.props.state.name}
               onChange={this.handleChange}
             />
             <div style={{ fontSize: 12, color: "red" }}>
-              {this.state.nameError}
+              {this.props.state.nameError}
             </div>
           </div>
           <div>
@@ -119,33 +129,33 @@ export default class ValiationForm extends React.Component {
             <input
               name="lastname"
               placeholder="Last name"
-              value={this.state.lastname}
+              value={this.props.state.lastname}
               onChange={this.handleChange}
             />
             <div style={{ fontSize: 12, color: "red" }}>
-              {this.state.lastnameError}
+              {this.props.state.lastnameError}
             </div>
           </div>
           <div>
             <input
               name="username"
               placeholder="User name"
-              value={this.state.username}
+              value={this.props.state.username}
               onChange={this.handleChange}
             />
             <div style={{ fontSize: 12, color: "red" }}>
-              {this.state.usernameError}
+              {this.props.state.usernameError}
             </div>
           </div>
           <div>
             <input
               name="email"
               placeholder="Email"
-              value={this.state.email}
+              value={this.props.state.email}
               onChange={this.handleChange}
             />
             <div style={{ fontSize: 12, color: "red" }}>
-              {this.state.emailError}
+              {this.props.state.emailError}
             </div>
           </div>
           <div>
@@ -153,11 +163,11 @@ export default class ValiationForm extends React.Component {
               type='date'
               name="birthday"
               placeholder="Date of birth"
-              value={this.state.birthday}
+              value={this.props.state.birthday}
               onChange={this.handleChange}
             />
             <div style={{ fontSize: 12, color: "red" }}>
-              {this.state.emailError}
+              {this.props.state.emailError}
             </div>
           </div>
           <div>
@@ -165,11 +175,11 @@ export default class ValiationForm extends React.Component {
               type="password"
               name="password"
               placeholder="Password"
-              value={this.state.password}
+              value={this.props.state.password}
               onChange={this.handleChange}
             />
             <div style={{ fontSize: 12, color: "red" }}>
-              {this.state.passwordError}
+              {this.props.state.passwordError}
             </div>
           </div>
           <div>
@@ -177,11 +187,11 @@ export default class ValiationForm extends React.Component {
               type="password"
               name="password2"
               placeholder="Password"
-              value={this.state.password2}
+              value={this.props.state.password2}
               onChange={this.handleChange}
             />
             <div style={{ fontSize: 12, color: "red" }}>
-              {this.state.passwordError2}
+              {this.props.state.passwordError2}
             </div>
           </div>
           <button className='submit-button' type="submit" >Submit</button>
@@ -189,3 +199,9 @@ export default class ValiationForm extends React.Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return { state }
+}
+
+export default connect(mapStateToProps)(ValidationForm)
