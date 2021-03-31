@@ -3,6 +3,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './signIn.scss'
 import axios from 'axios'
 import { connect } from 'react-redux'
+// import { useHistory as historyy } from 'react-router-dom'
+
 
 const initialState = {
     email: "",
@@ -11,12 +13,15 @@ const initialState = {
     passwordError: ""
 };
 
+// const history = historyy();
+
 class SignIn extends React.Component {
+
+
 
     state = initialState;
 
     handleChange = event => {
-
         const datas = event.target.name;
         let values = event.target.value;
         this.props.dispatch({ type: "HANDLECHANGE", data: datas, value: values })
@@ -27,11 +32,11 @@ class SignIn extends React.Component {
         let emailError = "";
         let passwordError = "";
 
-        if (!this.state.password) {
+        if (!this.props.state.password) {
             passwordError = "Password cannot be blank";
         }
 
-        if (!this.state.email.includes("@")) {
+        if (!this.props.state.email.includes("@")) {
             emailError = "Invalid email";
         }
 
@@ -48,10 +53,10 @@ class SignIn extends React.Component {
 
     getUserData = () => {
         const userData = {};
-        userData.email = this.state.email;
-        userData.password = this.state.password;
+        userData.email = this.props.state.email;
+        userData.password = this.props.state.password;
 
-        axios.post(`login`, userData)
+        axios.post(`http://31a783461268.ngrok.io/api/login`, userData)
             .then(response => {
                 localStorage.setItem('token', response.data.token)
                 this.props.getToken(response.data.token)
@@ -66,18 +71,21 @@ class SignIn extends React.Component {
         event.preventDefault();
         const isValid = this.validate();
         if (isValid) {
+            console.log("emaillllllllllll", this.props.state.email)
+            console.log("emaillllllllllll", this.props.state.password)
+            console.log("passwordError", this.props.state.passwordError)
+            console.log("passwordError", this.props.state.emailError)
             console.log(this.state);
             this.setState(initialState);
             this.getUserData();
+
+            // history.push("/");
         }
     };
 
     render() {
 
-        console.log("emaillllllllllll", this.props.state.email)
-        console.log("emaillllllllllll", this.props.state.password)
-        console.log("passwordError", this.props.state.passwordError)
-        console.log("passwordError", this.props.state.emailError)
+
         return (<div><form  >
             <div>
                 <input

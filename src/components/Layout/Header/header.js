@@ -67,7 +67,7 @@ const Header = (props) => {
 
             </ul>
             <form className="form-inline my-2 my-lg-0">
-                {props.userData ? <div className='sign-up'><button onClick={removeToken} className="my-2 my-sm-0"  > <Link to='/'><FontAwesomeIcon className='mr-1' icon={faSignOutAlt} />Log Out</Link></button></div>
+                {props.userData ? <div className='sign-up'><button onClick={() => { localStorage.clear() }} className="my-2 my-sm-0"  > <Link to='/'><FontAwesomeIcon className='mr-1' icon={faSignOutAlt} />Log Out</Link></button></div>
                     : <div className='sign-up'><button className="my-2 my-sm-0" onClick={(e) => showModal(e)} ><FontAwesomeIcon className='mr-1' icon={faSignInAlt} />Sign Up</button></div>}
                 {/*  */}
             </form>

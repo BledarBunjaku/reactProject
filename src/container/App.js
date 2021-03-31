@@ -4,13 +4,15 @@ import {
     BrowserRouter as Router,
     Switch,
     Route,
-    Link
+    Link,
+    useHistory
 } from "react-router-dom";
 import Header from '../components/Layout/Header/header'
 import Home from '../components/Home/home'
 import About from '../components/About/about'
 import Footer from '../components/Layout/Footer/footer'
 import UserProfile from '../components/User-profile/userProfile'
+import SeekHelp from "../components/Seek-help/seekHelp";
 import axios from 'axios'
 import OfferHelp from '../components/Offer_help/offerHelp'
 import { createStore } from 'redux'
@@ -27,39 +29,44 @@ const store = createStore(reducer);
 
 const App = () => {
 
+    // let token = localStorage.getItem("token")
 
     const [tokenUse, setTokenUse] = useState()
     const [userData, setUserData] = useState()
 
 
+
+
     let getToken = (token) => {
-        let config = {
-            headers: { Authorization: "Bearer " + token }
-        }
-        console.log("configgggg", config)
-        setTokenUse({ ...config })
-        if (!token) {
-            setUserData("")
-        }
+        // let config = {
+        //     headers: { Authorization: "Bearer " + token }
+        // }
+        // console.log("configgggg", config)
+        // setTokenUse({ ...config })
+        // if (!token) {
+        //     setUserData("")
+        // }
     }
 
-    if (!tokenUse && localStorage.getItem("token")) {
-        getToken(localStorage.getItem("token"))
-    }
+    // if (!tokenUse && localStorage.getItem("token")) {
+    //     getToken(localStorage.getItem("token"))
+    // }
 
 
     useEffect(() => {
-        axios.get(`user`, tokenUse)
-            .then(response => {
-                setUserData({ ...response.data })
-                console.log('thenResponse', response)
-            })
-            .catch(error => { console.log('errorrCatch', error) })
-    }, [tokenUse])
+
+        setUserData(localStorage.getItem("token"))
+        // axios.get(`user`, tokenUse)
+        //     .then(response => {
+        //         setUserData({ ...response.data })
+        //         console.log('thenResponse', response)
+        //     })
+        //     .catch(error => { console.log('errorrCatch', error) })
+    }, [localStorage.getItem("token")])
 
 
 
-    console.log("testtttttttttttttttttt", process.env.URL_SOURCE)
+
 
     const handleUserData = () => {
         // axios.get('user', config)
@@ -90,6 +97,9 @@ const App = () => {
                 <Route path="/about">
                     <About />
                 </Route>
+                <Route path="/seek">
+                    <SeekHelp />
+                </Route>
                 <Route path="/offer">
                     <OfferHelp userData={userData} token={tokenUse} />
                 </Route>
@@ -102,8 +112,8 @@ const App = () => {
             </Switch>
             <Footer />
         </Router>
-            <button onClick={setlocalstorage}>localstorage</button>
-            <button onClick={deletelocalstorage}>deletelocalstorage</button>
+            {/* <button onClick={setlocalstorage}>localstorage</button>
+            <button onClick={deletelocalstorage}>deletelocalstorage</button> */}
         </Provider>
     )
 }
