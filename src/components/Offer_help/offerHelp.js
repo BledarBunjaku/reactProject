@@ -10,7 +10,7 @@ export default class OfferHelp extends React.Component {
         email: this.props.userData.email,
         phoneNo: this.props.userData.phoneNo,
         cities: '',
-        jobs: '',
+        jobs: [],
         description: "",
         price: "",
         job_id: '',
@@ -45,10 +45,25 @@ export default class OfferHelp extends React.Component {
     }
 
     componentDidMount() {
-        axios.get('getJobs')
+        axios.get(`${process.env.REACT_APP_SOURCE_URL}/api/services`)
             .then(response => {
                 console.log('dataaaaa', response.data)
+                console.log('name: '+this.props.userData.name)
+                console.log('email: '+this.props.userData.email)
+                console.log('phoneNO: '+this.props.userData.phoneNo)
                 this.setState({ jobs: response.data })
+                // let jobsFromApi = response.data.map(job => {
+                //     return {value: job, display: job}
+                // })
+                // console.log('jobs from api: '+ jobsFromApi)
+                // this.setState({
+                //     jobs:[
+                //         {
+                //             value: "",
+                //             display: "Select the job you're able to do"
+                //         }
+                //     ].concat(jobsFromApi)
+                // })
             })
             .catch(error => { console.log(error) })
     }
@@ -64,7 +79,7 @@ export default class OfferHelp extends React.Component {
         object.job_id = this.state.job_id
         object.optionCity = this.state.optionCity
 
-        axios.post("offerhelp/createService", object, this.props.token)
+        axios.post(`${process.env.REACT_APP_SOURCE_URL}/offerhelp/createService`, object, this.props.token)
             .then(response => { console.log(response) })
             .catch(errorr => { console.log(errorr) })
     }
@@ -166,8 +181,14 @@ export default class OfferHelp extends React.Component {
                 <label for="jobs">Choose a car:</label>
 
                 <select name="job_id" onChange={this.handleChange}>
-                    {this.state.jobs ? this.state.jobs.map(job => <option value={job.id}>{job.name}</option>) : null}
-
+                    {this.state.jobs ? this.state.jobs.map(job => <option value={job.id}>{job.service_name}</option>) : null}
+                    {/* {this.state.jobs.map(job => (
+                        <option
+                            key={job.value}
+                            value={job.value}
+                        >{job.display}
+                        </option>
+                    ))} */}
                 </select>
             </div>
 

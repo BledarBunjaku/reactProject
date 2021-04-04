@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from '../src/container/App';
+import App from './Container/App';
 import reportWebVitals from './reportWebVitals';
 // import Register from './components/Layout/Header/Tabs/Register/register'
 // import Headerr from './components/headerrr/headerr'

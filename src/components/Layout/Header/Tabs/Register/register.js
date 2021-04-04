@@ -122,7 +122,7 @@ export default class ValiationForm extends React.Component {
 
         let userData = {};
         userData.email = this.state.email;
-        axios.post(`http://31a783461268.ngrok.io/api/register/email`, userData)
+        axios.post(`${process.env.REACT_APP_SOURCE_URL}/api/register/email`, userData)
           .then(response => {
             console.log('email+passwor-response', response)
             // if (response.data.message) {
@@ -158,7 +158,7 @@ export default class ValiationForm extends React.Component {
         let userData = {};
         userData.email = this.state.email;
         userData.password = this.state.password;
-        axios.post(`http://31a783461268.ngrok.io/api/register`, userData)
+        axios.post(`${process.env.REACT_APP_SOURCE_URL}/api/register`, userData)
           .then(response => {
             console.log('code-correct-response', response)
             localStorage.setItem("token", response.data.token)
