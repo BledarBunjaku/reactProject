@@ -55,7 +55,10 @@ const Header = (props) => {
                     <Link to="/seek">Seek Help</Link>
                 </li>
                 <li className="nav-item px-3">
-                    <Link to="/offer">Offer Help</Link>
+                    {props.userData ? <Link to="/offer">Offer Help</Link> :
+                        <Link to="/about">Offer Help</Link>
+                        
+                    }
                     {/* <a href='http://localhost:3000/offer'>offer</a> */}
                 </li>
                 <li className="nav-item px-3">
