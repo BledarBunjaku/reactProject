@@ -2,23 +2,29 @@ import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './signIn.scss'
 import axios from 'axios'
+import { connect } from 'react-redux'
+// import { useHistory as historyy } from 'react-router-dom'
+
 
 const initialState = {
     email: "",
     password: "",
     emailError: "",
-    passwordError: "",
-    isOpenModal: false
+    passwordError: ""
 };
 
-export default class SignIn extends React.Component {
+// const history = historyy();
+
+class SignIn extends React.Component {
+
+
 
     state = initialState;
 
     handleChange = event => {
-        this.setState({
-            [event.target.name]: event.target.value
-        });
+        const datas = event.target.name;
+        let values = event.target.value;
+        this.props.dispatch({ type: "HANDLECHANGE", data: datas, value: values })
     };
 
     validate = () => {
@@ -26,16 +32,19 @@ export default class SignIn extends React.Component {
         let emailError = "";
         let passwordError = "";
 
-        if (!this.state.password) {
+        if (!this.props.state.password) {
             passwordError = "Password cannot be blank";
         }
 
-        if (!this.state.email.includes("@")) {
+        if (!this.props.state.email.includes("@")) {
             emailError = "Invalid email";
         }
 
         if (emailError || passwordError) {
-            this.setState({ emailError, passwordError });
+            // this.setState({ emailError, passwordError });
+
+
+            this.props.dispatch({ type: "ERROR_INPUT", emailError, passwordError })
             return false;
         }
 
@@ -44,49 +53,49 @@ export default class SignIn extends React.Component {
 
     getUserData = () => {
         const userData = {};
-        userData.email = this.state.email;
-        userData.password = this.state.password;
-        axios.post(`${process.env.URL_SOURCE}/login`, userData)
+        userData.email = this.props.state.email;
+        userData.password = this.props.state.password;
+
+        axios.post(`${process.env.REACT_APP_SOURCE_URL}/api/login`, userData)
             .then(response => {
-                // localStorage.setItem('token', response.data.token)
+                localStorage.setItem('token', response.data.token)
                 this.props.getToken(response.data.token)
-                console.log('dataaaaa', response)
-                this.props.handleUserData();
+                console.log('dataaaaaaaaaaaaaaaaaaaa', response.data.token)
+                this.props.showModal()
             })
     }
 
-    // localStorage.setItem('token', response.data.token)
+
 
     handleSubmit = event => {
         event.preventDefault();
         const isValid = this.validate();
         if (isValid) {
+            console.log("emaillllllllllll", this.props.state.email)
+            console.log("emaillllllllllll", this.props.state.password)
+            console.log("passwordError", this.props.state.passwordError)
+            console.log("passwordError", this.props.state.emailError)
             console.log(this.state);
             this.setState(initialState);
             this.getUserData();
-            console.log('passsss', this.state)
+
+            // history.push("/");
         }
     };
 
-    setModal = (e) => {
-        e.preventDefault();
-        const newObj = this.state;
-        newObj.isOpenModal = true
-        this.setState({ ...newObj })
-    }
-
     render() {
+
 
         return (<div><form  >
             <div>
                 <input
                     name="email"
                     placeholder="Email"
-                    value={this.state.email}
+                    value={this.props.state.email}
                     onChange={this.handleChange}
                 />
                 <div style={{ fontSize: 12, color: "red" }}>
-                    {this.state.emailError}
+                    {this.props.state.emailError}
                 </div>
             </div>
             <div>
@@ -94,11 +103,11 @@ export default class SignIn extends React.Component {
                     type="password"
                     name="password"
                     placeholder="Password"
-                    value={this.state.password}
+                    value={this.props.state.password}
                     onChange={this.handleChange}
                 />
                 <div style={{ fontSize: 12, color: "red" }}>
-                    {this.state.passwordError}
+                    {this.props.state.passwordError}
                 </div>
             </div>
             <div className='submit-form'>
@@ -110,3 +119,9 @@ export default class SignIn extends React.Component {
 
     }
 }
+
+const mapStateToProps = state => {
+    return { state }
+}
+
+export default connect(mapStateToProps)(SignIn)

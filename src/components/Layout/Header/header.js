@@ -26,8 +26,9 @@ const Header = (props) => {
         // props.handleUserData();
     }
 
-    const showModal = (e) => {
-        e.preventDefault();
+    const showModal = (e = "") => {
+        if (e) { e.preventDefault(); }
+
         setModal(!modal);
     }
 
@@ -54,7 +55,10 @@ const Header = (props) => {
                     <Link to="/seek">Seek Help</Link>
                 </li>
                 <li className="nav-item px-3">
-                    <Link to="/offer">Offer Help</Link>
+                    {props.userData ? <Link to="/offer">Offer Help</Link> :
+                        <Link to="/about">Offer Help</Link>
+                        
+                    }
                     {/* <a href='http://localhost:3000/offer'>offer</a> */}
                 </li>
                 <li className="nav-item px-3">
@@ -66,7 +70,7 @@ const Header = (props) => {
 
             </ul>
             <form className="form-inline my-2 my-lg-0">
-                {props.userData ? <div className='sign-up'><button onClick={removeToken} className="my-2 my-sm-0"  > <Link to='/'><FontAwesomeIcon className='mr-1' icon={faSignOutAlt} />Log Out</Link></button></div>
+                {props.userData ? <div className='sign-up'><button onClick={() => { localStorage.clear() }} className="my-2 my-sm-0"  > <Link to='/'><FontAwesomeIcon className='mr-1' icon={faSignOutAlt} />Log Out</Link></button></div>
                     : <div className='sign-up'><button className="my-2 my-sm-0" onClick={(e) => showModal(e)} ><FontAwesomeIcon className='mr-1' icon={faSignInAlt} />Sign Up</button></div>}
                 {/*  */}
             </form>
@@ -78,8 +82,8 @@ const Header = (props) => {
                 <Tabs />
             </Modal> */}
             {modal ? <Modal >
-                <button className='close-modal' onClick={() => { setModal(false) }}>X</button>
-                <Tabs handleUserData={props.handleUserData} getToken={props.getToken} />
+                <button className='close-modal d-block' onClick={() => { setModal(false) }}>X</button>
+                <Tabs getToken={props.getToken} showModal={showModal} />
             </Modal> : null}
 
 

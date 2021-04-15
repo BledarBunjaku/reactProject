@@ -27,7 +27,10 @@ const Tabs = (props) => {
 
         </ul>
             <div className="tab-content" id="pills-tabContent">
-                <div className="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab"><SignIn handleUserData={props.handleUserData} open={(e) => showPasswordTab(e)} getToken={props.getToken}></SignIn></div>
+                <div className="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab"><SignIn
+                    open={(e) => showPasswordTab(e)}
+                    getToken={props.getToken}
+                    showModal={props.showModal}></SignIn></div>
                 <div className="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab"><Register></Register></div>
 
             </div>

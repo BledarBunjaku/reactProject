@@ -14,7 +14,6 @@ let initialState = {
     showEmail: true,
     showCode: false,
     showPassword: false,
-
     submitEmail: true,
     submitCode: false,
     submitPassword: false
@@ -25,7 +24,6 @@ export default class ForgotPassowrd extends React.Component {
     state = initialState;
 
     handleChange = event => {
-
         this.setState({
             [event.target.name]: event.target.value
         });
@@ -85,14 +83,14 @@ export default class ForgotPassowrd extends React.Component {
 
                 let userData = {};
                 userData.email = this.state.email;
-                axios.post(`${process.env.SOURCE_URL}/api/checkMail`, userData)
+                axios.post(`${process.env.REACT_APP_SOURCE_URL}/api/check/email`, userData)
                     .then(response => {
                         console.log('data', response)
-                        if (response.data.message) {
-                            this.setState({ emailError: 'Please, register first!' })
-                            console.log('data', response.data.message)
-                            return;
-                        }
+                        // if (response.data.message) {
+                        //     this.setState({ emailError: 'Please, register first!' })
+                        //     console.log('data', response.data.message)
+                        //     return;
+                        // }
                         if (response.data.code) {
                             this.setState({ givenCode: response.data.code })
                             console.log('data', response.data.code)
@@ -133,7 +131,7 @@ export default class ForgotPassowrd extends React.Component {
             let userData = {};
             userData.password = this.state.password;
             userData.email = this.state.email;
-            axios.post(`${process.env.SOURCE_URL}/api/changePassword`, userData)
+            axios.post(`${process.env.REACT_APP_SOURCE_URL}/api/change/password`, userData)
                 .then(response => {
                     console.log('data', response)
                 })

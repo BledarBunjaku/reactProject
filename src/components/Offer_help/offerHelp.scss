@@ -14,12 +14,21 @@
             height: 50px;
             border: 1px solid #dbdbdb;
             font-size: 22px;
-            color: #787775;
+
             border-radius: 3px;
             &:focus {
                 outline: none;
                 box-shadow: 0 0 4px 0 rgb(0, 0, 0);
             }
+        }
+
+        p {
+            color: #787775;
+        }
+        textarea,
+        select,
+        input {
+            color: black;
         }
         select {
             margin-bottom: 25px;
@@ -30,7 +39,7 @@
         textarea {
             width: 100%;
             border: 1px solid #dbdbdb;
-            color: #787775;
+
             &:focus {
                 outline: none;
                 box-shadow: 0 0 4px 0 rgb(0, 0, 0);
