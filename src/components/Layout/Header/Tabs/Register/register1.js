@@ -35,7 +35,7 @@ const Register = () => {
 
 
     const datass = async () => {
-        const response = await fetch(`http://276ebd12cfd4.ngrok.io/api/register`)
+        const response = await fetch(`http://localhost:8000/api/register`)
         const data = await response.json();
         // const modifyArray = data.hits.map(obj => ({ ...obj, nrAmount: 1 }))
         // setRecepies([...modifyArray])

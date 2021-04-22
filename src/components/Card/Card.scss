@@ -1,0 +1,46 @@
+.our-products {
+    padding: 30px 0;
+   
+.owning-product{
+    margin: 7px;
+    padding: 15px;
+    height: 10vh;
+}
+
+    h3{
+        text-align: center;
+font: normal normal 600 36px/46px Poppins;
+letter-spacing: 0px;
+color: #222222;
+    }
+    p{
+        text-align: center;
+font: normal normal normal 15px/27px Poppins;
+letter-spacing: 0px;
+color: #555555;
+opacity: 1;
+    }
+
+    .card-wrapper {
+        img{
+            position: relative;
+            width: 124;
+            height: 34;
+            text-align: center;
+        }
+        padding: 50px 35px;
+        background: #ffffff 0% 0% no-repeat padding-box;
+        box-shadow: 0px 10px 30px #99999933;
+        border-radius: 8px;
+        p {
+            font: normal normal normal 15px/27px Poppins;
+            letter-spacing: 0px;
+            color: #999999;
+        }
+        a {
+            font: normal normal medium 16px/25px Poppins;
+            letter-spacing: 0px;
+            color: #49be55;
+        }
+    }
+}
