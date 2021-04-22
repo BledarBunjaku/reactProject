@@ -14,11 +14,12 @@ const Hero = () => {
                 <Col md={8} sm={12}>
                     <h1 className="display-1 font-weight-bolder">CleanEx</h1>
                     <h3 className="display-4 font-weight-light">Too tired or can't seem to find the right guy?</h3>
-                    <h2 className="display-4 font-weight-light">We can help you!</h2>
-                </Col>
+                    <h2 className="display-4 font-weight-light">We can help you!</h2>      
+             </Col>
             </Row>
         </Container>
     </Jumbotron>
+    
     )
 }
 

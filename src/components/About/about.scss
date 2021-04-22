@@ -1,4 +1,9 @@
 .about-wrapper {
+    h1{
+        color:black;
+        display:flex;
+
+    }
     .our-work {
         .section-work {
             max-width: 950px;
@@ -15,6 +20,10 @@
                     height: 100%;
                     padding: 0 15px;
                 }
+            .accordion_questions{
+                width: 300px;
+            }
+            
             }
         }
     }
