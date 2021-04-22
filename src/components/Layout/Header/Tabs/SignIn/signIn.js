@@ -56,7 +56,7 @@ class SignIn extends React.Component {
         userData.email = this.props.state.email;
         userData.password = this.props.state.password;
 
-        axios.post(`http://31a783461268.ngrok.io/api/login`, userData)
+        axios.post(`http://localhost:8000/api/login`, userData)
             .then(response => {
                 localStorage.setItem('token', response.data.token)
                 this.props.getToken(response.data.token)

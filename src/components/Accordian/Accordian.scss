@@ -9,15 +9,18 @@ h2{
    color: #000;
 }
 .accordion_question{
-    width: 90%;
+    width: 80%;
     height: -550px;
     margin: 7px;
     padding: 15px;
+    opacity: 0.8;
+    
 }
 .item{
     background-color:rgba(245, 245, 245, 0.973);
     margin-bottom: 5px;
     padding: 20px 20px;
+  
 }
 .title {
     display:flex;

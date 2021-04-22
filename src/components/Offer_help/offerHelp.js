@@ -1,16 +1,45 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './offerHelp.scss'
+import {Multiselect} from 'multiselect-react-dropdown'
 import axios from 'axios'
 
-export default class OfferHelp extends React.Component {
 
-    state = {
-        name: this.props.userData.name,
-        email: this.props.userData.email,
-        phoneNo: this.props.userData.phoneNo,
+function OfferHelp(props) {
+
+    const cityOptions = [
+        {cId:1, city:'Prishtinë'},
+        {cId:2, city:'Prizren'},
+        {cId:3, city:'Ferizaj'},
+        {cId:4, city:'Pejë'},
+        {cId:5, city:'Gjakovë'},
+        {cId:6, city:'Gjilan'},
+        {cId:7, city:'Podujevë'},
+        {cId:8, city:'Mitrovicë'},
+        {cId:9, city:'Vushtrri'},
+        {cId:10, city:'Suharekë'},
+        {cId:11, city:'Lipjan'},
+        {cId:12, city:'Rahovec'},
+        {cId:13, city:'Malishevë'},
+        {cId:14, city:'Skenderaj'},
+        {cId:15, city:'Viti'},
+        {cId:16, city:'Deçan'},
+        {cId:17, city:'Istog'},
+        {cId:18, city:'Klinë'},
+        {cId:19, city:'Kamenicë'},
+        {cId:20, city:'Dragash'},
+        {cId:21, city:'Fushë Kosovë'},
+        {cId:22, city:'Shtime'},
+        {cId:23, city:'Obiliç'},
+    ]
+    
+
+    const initialState = {
+        name: 'Albert',
+        email: props.userData.email,
+        phoneNo: '123345',
         cities: '',
-        jobs: '',
+        jobs: [],
         description: "",
         price: "",
         job_id: '',
@@ -19,19 +48,25 @@ export default class OfferHelp extends React.Component {
 
     }
 
-    handleChange = event => {
+    const [cityData, setCityData] = useState(cityOptions)
+    const [state, setState] = useState(initialState)
+
+    
+
+    const handleChange = event => {
         event.preventDefault()
-        this.setState({
-            [event.target.name]: event.target.value
-        });
+        setState({...state, [event.target.name]:event.target.value})
+        console.log('Description: '+state.description)
     };
 
 
-    validatePhoneNumber = () => {
+
+
+    const validatePhoneNumber = () => {
 
         let phoneNumberError = ""
 
-        if (!this.state.phoneNo) {
+        if (!state.phoneNo) {
             phoneNumberError = 'Cant be empty'
 
         }
@@ -44,61 +79,74 @@ export default class OfferHelp extends React.Component {
         return true
     }
 
-    componentDidMount() {
-        axios.get('getJobs')
+    useEffect(() => {
+        axios.get(`${process.env.REACT_APP_SOURCE_URL}/api/services`)
             .then(response => {
                 console.log('dataaaaa', response.data)
-                this.setState({ jobs: response.data })
+                console.log('name: '+state.name)
+                console.log('email: '+props.userData.email)
+                console.log('phoneNO: '+state.phoneNo)
+                setState({...state, jobs:response.data})
+                // let jobsFromApi = response.data.map(job => {
+                //     return {value: job, display: job}
+                // })
+                // console.log('jobs from api: '+ jobsFromApi)
+                // this.setState({
+                //     jobs:[
+                //         {
+                //             value: "",
+                //             display: "Select the job you're able to do"
+                //         }
+                //     ].concat(jobsFromApi)
+                // })
             })
             .catch(error => { console.log(error) })
-    }
+    }, [])
 
-    postService = () => {
+    const postService = () => {
 
         let object = {}
-        object.name = this.state.name
-        object.email = this.state.email
-        object.phoneNo = this.state.phoneNo
-        object.description = this.state.description
-        object.price = this.state.price
-        object.job_id = this.state.job_id
-        object.optionCity = this.state.optionCity
+        object.name = state.name
+        object.email =state.email
+        object.phoneNo = state.phoneNo
+        object.description = state.description
+        object.price = state.price
+        object.job_id = state.job_id
+        object.optionCity = state.optionCity
 
-        axios.post("offerhelp/createService", object, this.props.token)
+        axios.post(`${process.env.REACT_APP_SOURCE_URL}/offerhelp/createService`, object, props.token)
             .then(response => { console.log(response) })
             .catch(errorr => { console.log(errorr) })
     }
 
-    handleSubmit = (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
 
-        let isValid = this.validatePhoneNumber();
+        let isValid = validatePhoneNumber();
 
         if (isValid) {
-            this.postService();
+            postService();
 
         }
 
 
     }
+    const onSelect = (data) => {
+        console.log('Qyteti: '+data.map(city => console.log(city)))
+    }
 
 
-
-
-
-    render() {
-
-        console.log("asasssssssssssssssss", this.props.token)
+        console.log("asasssssssssssssssss", props.token)
         // 
         return (<div className='offer-help'> <form >
             <div>
-                <p className='d-flex align-items-center px-1'>{this.props.userData.name}</p>
+                <p className='d-flex align-items-center px-1'>{state.name}</p>
             </div>
             <div>
-                <p className='d-flex align-items-center px-1'>{this.props.userData.email}</p>
+                <p className='d-flex align-items-center px-1'>{state.email}</p>
             </div>
-            {this.props.userData.phoneNo ? <div>
-                <p className='d-flex align-items-center px-1'>{this.props.userData.phoneNo}</p>
+            {state.phoneNo ? <div>
+                <p className='d-flex align-items-center px-1'>{state.phoneNo}</p>
             </div> :
                 <div>
                     <label>Last Name:</label>
@@ -106,11 +154,11 @@ export default class OfferHelp extends React.Component {
                         type='number'
                         name="phoneNo"
                         placeholder="Phone number"
-                        value={this.state.phoneNo}
-                        onChange={this.handleChange}
+                        value={state.phoneNo}
+                        onChange={handleChange}
                     />
                     <div style={{ fontSize: 12, color: "red" }}>
-                        {this.state.phoneNumberError}
+                        {state.phoneNumberError}
                     </div>
                 </div>}
             <div>
@@ -118,21 +166,27 @@ export default class OfferHelp extends React.Component {
                 <input
                     name="payment"
                     placeholder="Payment"
-                    value={this.state.payment}
-                    onChange={this.handleChange}
+                    value={state.payment}
+                    onChange={handleChange}
                     disabled="true"
                 />
                 <div style={{ fontSize: 12, color: "red" }}>
-                    {/* {this.state.lastnameError} */}
+                    {state.lastnameError}
                 </div>
             </div>
 
             <div>
+                <div>
+
+                <Multiselect
+                    options={cityOptions}
+                    displayValue='city'
+                    onSelect={onSelect}></Multiselect>
+                    
 
                 {/* //Job dropdown */}
-                <label for="cities">Choose a car:</label>
-
-                <select name='optionCity' onChange={this.handleChange}>
+                {/* <label for="cities">Choose a car:</label>
+                <select name='optionCity' onChange={handleChange}>
                     <option value="Prishtinë">Prishtinë</option>
                     <option value="Prizren">Prizren</option>
                     <option value="Ferizaj">Ferizaj</option>
@@ -156,7 +210,8 @@ export default class OfferHelp extends React.Component {
                     <option value="Fushë Kosovë">Fushë Kosovë</option>
                     <option value="Shtime">Shtime</option>
                     <option value="Obilic">Obilic</option>
-                </select>
+                </select> */}
+                </div>
             </div>
 
 
@@ -165,13 +220,19 @@ export default class OfferHelp extends React.Component {
                 {/* //Job dropdown */}
                 <label for="jobs">Choose a car:</label>
 
-                <select name="job_id" onChange={this.handleChange}>
-                    {this.state.jobs ? this.state.jobs.map(job => <option value={job.id}>{job.name}</option>) : null}
-
+                <select name="job_id" onChange={handleChange}>
+                    {state.jobs ? state.jobs.map(job => <option value={job.id}>{job.service_name}</option>) : null}
+                    {/* {this.state.jobs.map(job => (
+                        <option
+                            key={job.value}
+                            value={job.value}
+                        >{job.display}
+                        </option>
+                    ))} */}
                 </select>
             </div>
 
-            <textarea name="description" value={this.state.description} onChange={this.handleChange} rows="4" cols="100" placeholder='Description'>
+            <textarea name="description" value={state.description} onChange={handleChange} rows="4" cols="100" placeholder='Description'>
 
             </textarea>
             <div>
@@ -180,18 +241,19 @@ export default class OfferHelp extends React.Component {
                     type='number'
                     name="price"
                     placeholder="Price"
-                    value={this.state.price}
-                    onChange={this.handleChange}
+                    value={state.price}
+                    onChange={handleChange}
                 />
                 <div style={{ fontSize: 12, color: "red" }}>
-                    {/* {this.state.lastnameError} */}
+                    {state.lastnameError}
                 </div>
             </div>
-            <button onClick={this.handleSubmit} className='submit-button' type="submit" >Submit</button>
+            <button onClick={handleSubmit} className='submit-button' type="submit" >Submit</button>
         </form></div>
         )
-    }
 }
+
+export default OfferHelp
 
 
 {/* <button onClick={(e) => { this.handle(e) }}>nameee</button> */ }
