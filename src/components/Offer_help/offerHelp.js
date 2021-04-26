@@ -35,7 +35,7 @@ function OfferHelp(props) {
     
 
     const initialState = {
-        name: 'Leart',
+        name: 'Albert',
         email: props.userData.email,
         phoneNo: '123345',
         cities: '',
@@ -53,10 +53,12 @@ function OfferHelp(props) {
 
     
 
-    const handleChange = event => {
+      const handleChange = event => {
         event.preventDefault()
         setState({...state, [event.target.name]:event.target.value})
         console.log('Description: '+state.description)
+        
+
     };
 
 
@@ -114,7 +116,7 @@ function OfferHelp(props) {
         object.job_id = state.job_id
         object.optionCity = state.optionCity
 
-        axios.post(`${process.env.REACT_APP_SOURCE_URL}/offerhelp/createService`, object, props.token)
+        axios.post(`${process.env.REACT_APP_SOURCE_URL}/offerhelp/createPost`, object, props.token)
             .then(response => { console.log(response) })
             .catch(errorr => { console.log(errorr) })
     }
@@ -140,7 +142,9 @@ function OfferHelp(props) {
         // 
         return (<div className='offer-help'> <form >
             <div>
+                <h1>
                 <p className='d-flex align-items-center px-1'>{state.name}</p>
+                </h1>
             </div>
             <div>
                 <p className='d-flex align-items-center px-1'>{state.email}</p>
@@ -178,7 +182,7 @@ function OfferHelp(props) {
             <div>
                 <div>
 
-                <Multiselect
+                <Multiselect 
                     options={cityOptions}
                     displayValue='city'
                     onSelect={onSelect}></Multiselect>
@@ -186,7 +190,6 @@ function OfferHelp(props) {
 
                 {/* //Job dropdown */}
                 {/* <label for="cities">Choose a car:</label>
-
                 <select name='optionCity' onChange={handleChange}>
                     <option value="Prishtinë">Prishtinë</option>
                     <option value="Prizren">Prizren</option>
@@ -219,7 +222,7 @@ function OfferHelp(props) {
             <div>
 
                 {/* //Job dropdown */}
-                <label for="jobs">Choose a car:</label>
+              
 
                 <select name="job_id" onChange={handleChange}>
                     {state.jobs ? state.jobs.map(job => <option value={job.id}>{job.service_name}</option>) : null}
