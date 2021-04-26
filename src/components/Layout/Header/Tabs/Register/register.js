@@ -6,45 +6,36 @@ import { noAuto } from "@fortawesome/fontawesome-svg-core";
 
 
 const initialState = {
-  name: "",
-  lastname: "",
-  username: "",
+
   email: "",
   givenCode: '',
-  birthday: "",
   password: "",
   password2: "",
-  nameError: "",
-  usernameError: "",
-  lastnameError: "",
   emailError: "",
+  codeError: '',
   passwordError: "",
   passwordError2: "",
   showEmail: true,
   showCode: false,
   submitEmail: true,
-  submitCode: false
+  submitCode: false,
+
 };
 
 export default class ValiationForm extends React.Component {
   state = initialState;
 
   handleChange = event => {
-    const isCheckbox = event.target.type === "checkbox";
+
     this.setState({
-      [event.target.name]: isCheckbox
-        ? event.target.checked
-        : event.target.value
+      [event.target.name]: event.target.value
     });
   };
 
   validateEmail = () => {
-    let nameError = "";
     let emailError = "";
     let passwordError = "";
     let passwordError2 = "";
-    let lastnameError = '';
-    let usernameError = "";
 
     // if (!this.state.name) {
     //   nameError = "Name cannot be blank";
@@ -66,8 +57,8 @@ export default class ValiationForm extends React.Component {
     if (!this.state.email.includes("@")) {
       emailError = "Invalid email";
     }
-    if (emailError || nameError || passwordError || lastnameError || usernameError || passwordError2) {
-      this.setState({ emailError, nameError, passwordError, lastnameError, usernameError, passwordError2 });
+    if (emailError || passwordError || passwordError2) {
+      this.setState({ emailError, passwordError, passwordError2 });
       return false;
     }
     return true;
@@ -81,7 +72,7 @@ export default class ValiationForm extends React.Component {
 
 
     if (codeError) {
-      this.setState({ codeError });
+      this.setState({ codeError: codeError });
       return false;
     }
     return true;
@@ -122,18 +113,18 @@ export default class ValiationForm extends React.Component {
 
         let userData = {};
         userData.email = this.state.email;
-        axios.post(`${process.env.REACT_APP_SOURCE_URL}/api/register/email`, userData)
+        axios.post(`http://127.0.0.1:8000/api/register/email`, userData)
           .then(response => {
-            console.log('email+passwor-response', response)
+
             // if (response.data.message) {
             //   this.setState({ emailError: 'Please, register first!' })
             //   console.log('data', response.data.message)
             //   return;
             // }
+
             if (response.data.code) {
-              this.setState({ givenCode: response.data.code })
-              console.log('data', response.data.code)
               this.setState({
+                givenCode: response.data.code,
                 showEmail: false,
                 showCode: true,
                 submitEmail: false,
@@ -142,8 +133,8 @@ export default class ValiationForm extends React.Component {
             }
           })
           .catch(err => {
-            this.setState({ emailError: 'Please, register first!' })
-            console.log('passsss', this.state)
+            this.setState({ emailError: err.response.data.error })
+
           })
 
       }
@@ -158,34 +149,31 @@ export default class ValiationForm extends React.Component {
         let userData = {};
         userData.email = this.state.email;
         userData.password = this.state.password;
-        axios.post(`${process.env.REACT_APP_SOURCE_URL}/api/register`, userData)
+        axios.post(`http://127.0.0.1:8000/api/register`, userData)
           .then(response => {
             console.log('code-correct-response', response)
             localStorage.setItem("token", response.data.token)
           })
 
       }
+
     }
   }
 
 
 
-
-  getUserData = () => {
-
-    const userData = {};
-    userData.name = this.state.name;
-    userData.lastname = this.state.lastname;
-    userData.username = this.state.username;
-    userData.email = this.state.email;
-    userData.birthday = this.state.birthday;
-    userData.password = this.state.password
-
-    axios.post(`${process.env.URL_SOURCE}/api/register`, userData)
-      .then(response => {
-        console.log('data', response)
-      })
-  }
+  /* 
+    getUserData = () => {
+  
+      const userData = {};
+      userData.email = this.state.email;
+      userData.password = this.state.password
+  
+      axios.post(`http://127.0.0.1:8000/api/register`, userData)
+        .then(response => {
+          console.log('data', response)
+        })
+    } */
 
   // handleSubmit = event => {
   //   event.preventDefault();

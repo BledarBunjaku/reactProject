@@ -20,7 +20,6 @@ import { Provider } from 'react-redux';
 import reducer from '../store/reducer'
 
 
-axios.defaults.baseURL = "http://8f2e874dcb9e.ngrok.io/api/"
 
 
 
@@ -85,7 +84,7 @@ const App = () => {
         console.log("cleared")
     }
 
-    console.log('datasssssssssssssssss', tokenUse)
+    console.log('TOKEN', tokenUse)
 
     return (
         <Provider store={store}><Router>

@@ -56,12 +56,16 @@ class SignIn extends React.Component {
         userData.email = this.props.state.email;
         userData.password = this.props.state.password;
 
-        axios.post(`${process.env.REACT_APP_SOURCE_URL}/api/login`, userData)
+        axios.post(`http://127.0.0.1:8000/api/login`, userData)
             .then(response => {
+
                 localStorage.setItem('token', response.data.token)
+                localStorage.setItem('email', response.data.email)
                 this.props.getToken(response.data.token)
-                console.log('dataaaaaaaaaaaaaaaaaaaa', response.data.token)
+                console.log('TOKEN', response.data.token)
                 this.props.showModal()
+            }).catch(err => {
+                console.log(err.response.data.error)
             })
     }
 
@@ -71,10 +75,10 @@ class SignIn extends React.Component {
         event.preventDefault();
         const isValid = this.validate();
         if (isValid) {
-            console.log("emaillllllllllll", this.props.state.email)
-            console.log("emaillllllllllll", this.props.state.password)
+            console.log("email", this.props.state.email)
+            console.log("password", this.props.state.password)
             console.log("passwordError", this.props.state.passwordError)
-            console.log("passwordError", this.props.state.emailError)
+            console.log("emailError", this.props.state.emailError)
             console.log(this.state);
             this.setState(initialState);
             this.getUserData();

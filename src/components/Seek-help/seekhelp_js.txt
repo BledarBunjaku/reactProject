@@ -1,17 +1,11 @@
 import React from 'react'
 import './seekHelp.scss'
-import Dizajner from '../../Images/seek_help_images/Dizajner.jpg'
+import Dishwasher from '../../Images/dishwasher.jpg'
 import axios from 'axios'
-import 'bootstrap/dist/css/bootstrap.min.css'
+import DropdownMultiselect from "react-multiselect-dropdown-bootstrap"
 import Select from 'react-select'
 
-
-
-
-
-
-import { Container, Row, Col, Button, Card } from 'react-bootstrap'
-
+import { Container, Row, Col } from 'react-bootstrap'
 
 
 
@@ -28,12 +22,12 @@ class SeekHelp extends React.Component {
             location: '',
             service: '',
             posts: [],
-            postNotFound: false,
+            postNotFound: '',
+            params: '',
             citiesOption: [],
             servicesOption: [],
             selectedCities: '',
-            selectedServices: '',
-            price: ''
+            selectedServices: ''
         }
     }
 
@@ -42,7 +36,7 @@ class SeekHelp extends React.Component {
     componentDidMount() {
         axios.get('http://127.0.0.1:8000/api/cities?country_id=1')
             .then(response => {
-                if (response.data.length === 0) {
+                if (response.data.length == 0) {
                     this.setState({ emptyCity: 'Empty cities list' })
                 } else {
 
@@ -79,7 +73,7 @@ class SeekHelp extends React.Component {
 
         axios.get('http://127.0.0.1:8000/api/services')
             .then(response => {
-                if (response.data.length === 0) {
+                if (response.data.length == 0) {
                     this.setState({ emptyService: 'Empty services list' })
                 } else {
 
@@ -88,70 +82,44 @@ class SeekHelp extends React.Component {
                     })
 
 
-                    this.setState({ services: this.state.services.concat(this.state.servicesOption) });
+                    this.setState({ service: this.state.service.concat(this.state.servicesOption) });
 
                 }
             })
             .catch(error => console.log(error))
 
-        axios.get('http://127.0.0.1:8000/api/seekhelp/posts')
-            .then(response => {
-                this.setState({ posts: response.data })
-
-                /*   console.log(response.data) */
-            })
-            .catch(error => {
-                this.setState({ postNotFound: true })
-            })
-
 
 
     }
 
-    cityOnChangeHandler = (event) => {
-        let cityString = ''
-        event.map((city) => {
-            cityString += city.label + ','
-        })
-        cityString = cityString.slice(0, -1);
-        this.setState({ location: cityString })
+    changeCityHandler = (event) => {
+        this.setState({ location: event.target.value })
     }
-
-    serviceOnChangeHandler = (event) => {
-        let serviceString = ''
-        event.map((service) => {
-            serviceString += service.label + ','
-        })
-        serviceString = serviceString.slice(0, -1);
-        this.setState({ service: serviceString })
+    changeServiceHandler = (event) => {
+        this.setState({ service: event.target.value })
     }
-
-    priceOnChangeHandler = (event) => {
-        this.setState({ price: event.label })
-    }
-
     submitHandler = () => {
-
         this.setState({ posts: [] })
 
-
-        let params = 'location=' + this.state.location + '&service=' + this.state.service + '&price=' + this.state.price
-
-
-
+        if (this.state.location != 'empty' && this.state.service != 'empty') {
+            this.setState({ params: 'location=' + this.state.location + '&service=' + this.state.service })
+        } else if (this.state.location != 'empty') {
+            this.setState({ params: 'location=' + this.state.location })
+        }
+        else if (this.state.service != 'empty') {
+            this.setState({ params: 'service=' + this.state.service })
+        } else {
+            this.setState({ params: '' })
+        }
 
         /*  alert(this.state.params) */
-        axios.get('http://127.0.0.1:8000/api/seekhelp/posts?' + params)
+        axios.get('http://127.0.0.1:8000/api/seekhelp/posts?' + this.state.params)
             .then(response => {
-                this.setState({
-                    posts: response.data,
-                    postNotFound: false
-                })
-
-                /*   console.log(response.data) */
+                this.setState({ posts: response.data })
+                /* console.log(response.data) */
             })
             .catch(error => {
-                this.setState({ postNotFound: true })
+                this.setState({ postNotFound: 'Post Not Found' })
             })
 
         /* alert("Selected City : " + this.state.location + ", Selected Service : " + this.state.service) */
@@ -165,29 +133,27 @@ class SeekHelp extends React.Component {
           selected.map(item => console.log(item.label)) */
 
     }
-
-
     render() {
         const { cities, emptyCity, services, emptyService, posts, postNotFound, citiesOption, servicesOption } = this.state
-        return (
-            <Container fluid>
-                <Row className="mx-auto my-2 pb-5 pt-2 text-center" >
-                    <Col xs={12} md={4}><Select
+        return (<div className='seek-help-wrapper'>
+            <Container fluid >
+                <Row className="justify-content-md-center">
+                    <Col xs={'auto'}><Select
                         placeholder="Kërko qytetin"
                         options={citiesOption}
                         isMulti="true"
                         name="cities"
-                        onChange={this.cityOnChangeHandler}
+                        onChange={this.handleOnChange}
                     ></Select></Col>
-                    <Col xs={12} md={4}><Select
+                    <Col ><Select
                         /* inputValue="Zgjidh" */
                         placeholder="Kërko servisin"
                         options={servicesOption}
                         isMulti="true"
-                        name="services"
-                        onChange={this.serviceOnChangeHandler}
+                        name="service"
+                        onChange={this.handleOnChange}
                     ></Select></Col>
-                    <Col xs={12} md={2}><Select
+                    <Col ><Select
                         placeholder="Zgjidh çmimin"
                         options={[
                             { 'value': 1, 'label': '0-49' },
@@ -197,42 +163,45 @@ class SeekHelp extends React.Component {
                             { 'value': 5, 'label': '200-250' }
                         ]}
                         name="cities"
-                        onChange={this.priceOnChangeHandler}
+                        onChange={this.handleOnChange}
                     ></Select></Col>
-                    <Col xs={12} md={2}><Button onClick={this.submitHandler}>Search</Button></Col>
+                    <Col ><button onClick={this.submitHandler}>Search</button></Col>
                 </Row>
-                <Row className="mx-auto my-2 ">
-
-                    {postNotFound ? 'Post Not Found' :
-
-                        //holder.js/100px180
-                        posts.map(item => (
-                            <Col sm="6" md="4" lg="3" className="my-2">
-                                <Card style={{ width: '18rem' }}>
-                                    <Card.Img variant="top" src={Dizajner} width="100" height="180" />
-
-                                    <Card.Body>
-                                        <Card.Title>{item.title}</Card.Title>
-                                        <Card.Text>
-                                            {item.location} <br />
-                                            Çmimi {item.price}€
-                                        </Card.Text>
-                                        <Button >Lexo me shume</Button>
-
-                                    </Card.Body>
-                                </Card>
-                            </Col>
-                        ))}
-
-
-                </Row>
-
-
-
             </Container>
 
 
-        )
+            <div className='cards-wrapper'>
+
+                {
+                    posts.length ? posts.map(post =>
+                        <div className='card' key={post.id}>
+                            <span className='card-image'>
+                                <div className='card-image__content'>
+                                    <div className='image'><img src={Dishwasher}></img></div>
+                                </div>
+                            </span>
+                            <span className='card-content'>
+                                <h4>Title : {post.title}</h4>
+                                {/* <h5>Name of user</h5> */}
+                                <h5>Price : {post.price}</h5>
+                                {/* <p>Descriptionnn...</p> */}
+                                <p>Location : {post.location}</p>
+                                <p>Service : {post.service_name}</p>
+                            </span>
+                        </div>) : postNotFound
+                }
+
+            </div>
+
+            <div className='full-card'>
+                <h2>FULL CARD VIEW </h2>
+                <h3>TITLE </h3>
+                <h3>PRICE </h3>
+                <h3>DESCRIPTION </h3>
+                <h3>ADDRESS </h3>
+            </div>
+
+        </div>)
     }
 
 }
