@@ -1,0 +1,48 @@
+<Form.Group controlId="details">
+                            <Form.Label>Emri:</Form.Label>
+                            {this.props.details.first_name != '' ? <Form.Control type="text" value={this.props.userDetails.first_name} /> :
+                                <Form.Control type="text" placeholder="Plotëso emrin" />}
+
+                            <Form.Label>Mbiemri:</Form.Label>
+                            {this.props.details.last_name != '' ? <Form.Control type="text" value={this.props.userDetails.last_name} /> :
+                                <Form.Control type="text" placeholder="Plotëso mbiemrin" />}
+
+                            <Form.Label>Viti i lindjes:</Form.Label>
+                            {this.props.details.birthday  != '' ? <Form.Control type="text" value={this.props.userDetails.birthday} /> :
+                                <Form.Control type="text" placeholder="Plotëso vitin e lindjes" />}
+
+                            <Form.Label>Email:</Form.Label>
+                            {this.props.details.email != '' ? <Form.Control type="email" value={this.props.userDetails.email} /> :
+                                <Form.Control type="email" placeholder="Plotëso emailin" />}
+
+                            <Form.Label>Numri i telefonit:</Form.Label>
+                            {this.props.details.phone_number != '' ? <Form.Control type="text" value={this.props.userDetails.phone_number} /> :
+                                <Form.Control type="text" placeholder="Plotëso numrin e telefonit" />}
+
+
+
+                        </Form.Group>
+
+
+
+
+
+
+
+
+*************************
+
+<Form.Group controlId="details">
+                            <Form.Label>Emri:</Form.Label>
+                            <Form.Control type="text" value={this.props.userDetails.first_name} />
+                            <Form.Label>Mbiemri:</Form.Label>
+                            <Form.Control type="text" value={this.props.userDetails.last_name} />
+                            <Form.Label>Viti i lindjes:</Form.Label>
+                            <Form.Control type="text" value={this.props.userDetails.birthday} />
+                            <Form.Label>Email:</Form.Label>
+                            <Form.Control type="email" value={this.props.userDetails.email} />
+                            <Form.Label>Numri i telefonit:</Form.Label>
+                            <Form.Control type="email" value={this.props.userDetails.phone_number} />
+
+
+                        </Form.Group>

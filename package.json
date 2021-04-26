@@ -19,10 +19,12 @@
     "react-bootstrap": "^1.5.1",
     "react-dom": "^17.0.1",
     "react-modal": "^3.12.1",
+    "react-phone-number-input": "^3.1.19",
     "react-redux": "^7.2.3",
     "react-responsive-accordion": "^1.0.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
+    "react-select": "^4.3.0",
     "redux": "^4.0.5",
     "web-vitals": "^1.1.0",
     "yup": "^0.32.9"
