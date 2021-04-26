@@ -58,7 +58,11 @@ class SignIn extends React.Component {
 
         axios.post(`http://localhost:8000/api/login`, userData)
             .then(response => {
+               // !response.data.token ? localStorage.setItem('token', response.data.token):null
+               if (response.data.token)
+               {
                 localStorage.setItem('token', response.data.token)
+               } 
                 this.props.getToken(response.data.token)
                 console.log('dataaaaaaaaaaaaaaaaaaaa', response.data.token)
                 this.props.showModal()
