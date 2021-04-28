@@ -10,7 +10,8 @@ const initialState = {
     email: "",
     password: "",
     emailError: "",
-    passwordError: ""
+    passwordError: "",
+    errorMessage: ''
 };
 
 // const history = historyy();
@@ -24,6 +25,7 @@ class SignIn extends React.Component {
     handleChange = event => {
         const datas = event.target.name;
         let values = event.target.value;
+        this.setState({ [event.target.name]: event.target.value })
         this.props.dispatch({ type: "HANDLECHANGE", data: datas, value: values })
     };
 
@@ -58,15 +60,17 @@ class SignIn extends React.Component {
 
         axios.post(`http://localhost:8000/api/login`, userData)
             .then(response => {
-               // !response.data.token ? localStorage.setItem('token', response.data.token):null
-               if (response.data.token)
-               {
-                localStorage.setItem('token', response.data.token)
-               } 
+
+                // !response.data.token ? localStorage.setItem('token', response.data.token):null
+                if (response.data.token) {
+                    localStorage.setItem('token', response.data.token)
+                    localStorage.setItem('email', response.data.email)
+                }
                 this.props.getToken(response.data.token)
-                console.log('dataaaaaaaaaaaaaaaaaaaa', response.data.token)
                 this.props.showModal()
-            })
+            }).catch(error => (
+                this.setState({ errorMessage: error.response.data.message })
+            ))
     }
 
 
@@ -75,22 +79,20 @@ class SignIn extends React.Component {
         event.preventDefault();
         const isValid = this.validate();
         if (isValid) {
-            console.log("emaillllllllllll", this.props.state.email)
-            console.log("emaillllllllllll", this.props.state.password)
-            console.log("passwordError", this.props.state.passwordError)
-            console.log("passwordError", this.props.state.emailError)
-            console.log(this.state);
-            this.setState(initialState);
             this.getUserData();
+            this.setState(initialState);
+
+
 
             // history.push("/");
         }
+
     };
 
     render() {
 
 
-        return (<div><form  >
+        return (<div><form >
             <div>
                 <input
                     name="email"
@@ -98,9 +100,14 @@ class SignIn extends React.Component {
                     value={this.props.state.email}
                     onChange={this.handleChange}
                 />
-                <div style={{ fontSize: 12, color: "red" }}>
+                {this.props.state.emailError != '' ? <div style={{ fontSize: 12, color: "red" }}>
                     {this.props.state.emailError}
-                </div>
+                </div> : null}
+                {this.state.errorMessage != '' ? <div style={{ fontSize: 12, color: "red" }}>
+                    {this.state.errorMessage}
+                </div> : null}
+
+
             </div>
             <div>
                 <input
@@ -116,7 +123,7 @@ class SignIn extends React.Component {
             </div>
             <div className='submit-form'>
                 <button className='forgot-password-button' onClick={(e) => this.props.open(e)}>Forgot password?</button>
-                <button className='submit-button' onClick={this.handleSubmit}>Submit</button>
+                <button className='submit-button' onClick={this.handleSubmit} >Submit</button>
             </div>
         </form>
         </div >)

@@ -6,6 +6,7 @@ import axios from 'axios'
 import { Container, Row, Col } from 'react-bootstrap'
 import TableDetails from './TableDetails';
 import PostsList from './PostsList';
+import Error404 from '../Errors/Error404'
 
 class userProfile extends React.Component {
     constructor(props) {
@@ -14,7 +15,9 @@ class userProfile extends React.Component {
         this.state = {
             userPosts: [],
             userDetails: [],
-            postNotFound: ''
+            postNotFound: false,
+            detailsNotFound: false,
+            unauthenticated: false
         }
     }
 
@@ -23,12 +26,22 @@ class userProfile extends React.Component {
             .then(response => {
                 //   debugger;
                 //    console.log(response)
-                console.log(response.data)
-                this.setState({ userPosts: response.data })
+                //console.log(response.data)
+                if (response.data.message != undefined) {
+                    this.setState({ postNotFound: true })
+
+                } else {
+                    this.setState({ userPosts: response.data })
+                }
+
+
             })
             .catch(error => {
-                console.log(error)
+                if (error.response.status == 401) {
+                    this.setState({ unauthenticated: true })
+                }
                 this.setState({ postNotFound: true })
+
             })
 
 
@@ -39,8 +52,11 @@ class userProfile extends React.Component {
 
             })
             .catch(error => {
-                console.log(error.response.data.error)
-                this.setState({ postNotFound: true })
+                if (error.response.status == 401) {
+                    this.setState({ unauthenticated: true })
+                }
+                // console.log(error.response.data.error)
+                this.setState({ detailsNotFound: true })
             })
     }
 
@@ -48,20 +64,23 @@ class userProfile extends React.Component {
 
 
     render() {
-        const { userPosts, userDetails } = this.state
+        const { userPosts, userDetails, postNotFound, detailsNotFound, unauthenticated } = this.state
         return (
 
             < Container >
 
-                <Row>
+                {unauthenticated ? <Error404 /> : <Row>
                     <Col sm="5" md="5" lg="5" className="text-center my-2">
-                        <TableDetails userDetails={userDetails}></TableDetails>
+                        <TableDetails userDetails={userDetails} ></TableDetails>
                     </Col>
                     <Col sm="7" md="7" lg="7" className="text-center my-2">
                         List of Posts
-                        <PostsList userPosts={userPosts}></PostsList>
+                        {postNotFound ? null : <PostsList userPosts={userPosts} ></PostsList>}
+
                     </Col>
-                </Row>
+
+                </Row>}
+
             </Container >
         )
     }

@@ -1,263 +1,152 @@
-import React, {useState, useEffect} from 'react'
+import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './offerHelp.scss'
-import {Multiselect} from 'multiselect-react-dropdown'
+import Select from 'react-select'
+import UserProfile from '../User-profile/userProfile'
+import TextareaAutosize from 'react-textarea-autosize';
+
+import { Redirect } from "react-router-dom";
 import axios from 'axios'
 
+import { Modal, Button, Form, Row, Col, Container } from 'react-bootstrap'
+import OfferHelpForm from './OfferHelpForm'
+import Error404 from '../Errors/Error404';
 
-function OfferHelp(props) {
 
-    const cityOptions = [
-        {cId:1, city:'Prishtinë'},
-        {cId:2, city:'Prizren'},
-        {cId:3, city:'Ferizaj'},
-        {cId:4, city:'Pejë'},
-        {cId:5, city:'Gjakovë'},
-        {cId:6, city:'Gjilan'},
-        {cId:7, city:'Podujevë'},
-        {cId:8, city:'Mitrovicë'},
-        {cId:9, city:'Vushtrri'},
-        {cId:10, city:'Suharekë'},
-        {cId:11, city:'Lipjan'},
-        {cId:12, city:'Rahovec'},
-        {cId:13, city:'Malishevë'},
-        {cId:14, city:'Skenderaj'},
-        {cId:15, city:'Viti'},
-        {cId:16, city:'Deçan'},
-        {cId:17, city:'Istog'},
-        {cId:18, city:'Klinë'},
-        {cId:19, city:'Kamenicë'},
-        {cId:20, city:'Dragash'},
-        {cId:21, city:'Fushë Kosovë'},
-        {cId:22, city:'Shtime'},
-        {cId:23, city:'Obiliç'},
-    ]
-    
 
-    const initialState = {
-        name: 'Albert',
-        email: props.userData.email,
-        phoneNo: '123345',
-        cities: '',
-        jobs: [],
-        description: "",
-        price: "",
-        job_id: '',
-        optionCity: '',
-        phoneNumberError: '',
 
+class offerHelp extends React.Component {
+
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            userDetails: [],
+            postDetails: {
+                service_id: '',
+                location: '',
+                title: '',
+                content: '',
+                price: ''
+            },
+            services: [],
+            cities: [],
+            userDetailsNotFound: false,
+            unauthenticated: false
+        }
     }
 
-    const [cityData, setCityData] = useState(cityOptions)
-    const [state, setState] = useState(initialState)
 
-    
-
-      const handleChange = event => {
-        event.preventDefault()
-        setState({...state, [event.target.name]:event.target.value})
-        console.log('Description: '+state.description)
-        
-
-    };
-
-
-
-
-    const validatePhoneNumber = () => {
-
-        let phoneNumberError = ""
-
-        if (!state.phoneNo) {
-            phoneNumberError = 'Cant be empty'
-
-        }
-
-        if (phoneNumberError) {
-            this.setState({ phoneNumberError })
-            return false
-        }
-
-        return true
-    }
-
-    useEffect(() => {
-        axios.get(`${process.env.REACT_APP_SOURCE_URL}/api/services`)
+    componentDidMount() {
+        axios.get('http://127.0.0.1:8000/api/user', { headers: { 'Authorization': "Bearer " + localStorage.getItem("token") } })
             .then(response => {
-                console.log('dataaaaa', response.data)
-                console.log('name: '+state.name)
-                console.log('email: '+props.userData.email)
-                console.log('phoneNO: '+state.phoneNo)
-                setState({...state, jobs:response.data})
-                // let jobsFromApi = response.data.map(job => {
-                //     return {value: job, display: job}
-                // })
-                // console.log('jobs from api: '+ jobsFromApi)
-                // this.setState({
-                //     jobs:[
-                //         {
-                //             value: "",
-                //             display: "Select the job you're able to do"
-                //         }
-                //     ].concat(jobsFromApi)
-                // })
+
+                console.log(response.data)
+                this.setState({ userDetails: response.data })
+
             })
-            .catch(error => { console.log(error) })
-    }, [])
+            .catch(error => {
+                // console.log(error.response.data.error)
+                if (error.response.status == 401) {
+                    this.setState({ unauthenticated: true })
+                }
+                this.setState({ userDetailsNotFound: true })
+            })
+        axios.get('http://127.0.0.1:8000/api/services')
+            .then(response => {
 
-    const postService = () => {
+                response.data.map(item => {
+                    this.state.services.push({ 'value': item.id, 'label': item.service_name })
+                })
 
-        let object = {}
-        object.name = state.name
-        object.email =state.email
-        object.phoneNo = state.phoneNo
-        object.description = state.description
-        object.price = state.price
-        object.job_id = state.job_id
-        object.optionCity = state.optionCity
 
-        axios.post(`${process.env.REACT_APP_SOURCE_URL}/offerhelp/createPost`, object, props.token)
-            .then(response => { console.log(response) })
-            .catch(errorr => { console.log(errorr) })
+            })
+            .catch(error => {
+                //console.log(error.response.data.error)
+                //this.setState({ userDetailsNotFound: true })
+            })
+        axios.get('http://127.0.0.1:8000/api/cities?country_id=1')
+            .then(response => {
+                response.data.map(item => {
+                    this.state.cities.push({ 'value': item.id, 'label': item.city_name })
+                })
+
+            })
+            .catch(error => {
+                //console.log(error.response.data.error)
+                //this.setState({ userDetailsNotFound: true })
+            })
+
     }
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    serviceOnChangeHandler = (event) => {
 
-        let isValid = validatePhoneNumber();
-
-        if (isValid) {
-            postService();
-
-        }
-
+        this.setState(prevState => ({
+            postDetails: {
+                ...prevState.postDetails,
+                service_id: event.value
+            }
+        }))
 
     }
-    const onSelect = (data) => {
-        console.log('Qyteti: '+data.map(city => console.log(city)))
+    citiesOnChangeHandler = (event) => {
+
+
+        let citiesString = ""
+        event.map((city) => {
+            citiesString += city.label + ","
+        })
+        citiesString = citiesString.slice(0, -1);
+        // console.log(citiesString)
+        this.setState(prevState => ({
+            postDetails: {
+                ...prevState.postDetails,
+                location: citiesString
+            }
+        }))
+        // console.log(this.state.postDetails.location)
     }
 
 
-        console.log("asasssssssssssssssss", props.token)
-        // 
-        return (<div className='offer-help'> <form >
-            <div>
-                <h1>
-                <p className='d-flex align-items-center px-1'>{state.name}</p>
-                </h1>
-            </div>
-            <div>
-                <p className='d-flex align-items-center px-1'>{state.email}</p>
-            </div>
-            {state.phoneNo ? <div>
-                <p className='d-flex align-items-center px-1'>{state.phoneNo}</p>
-            </div> :
-                <div>
-                    <label>Last Name:</label>
-                    <input
-                        type='number'
-                        name="phoneNo"
-                        placeholder="Phone number"
-                        value={state.phoneNo}
-                        onChange={handleChange}
-                    />
-                    <div style={{ fontSize: 12, color: "red" }}>
-                        {state.phoneNumberError}
-                    </div>
-                </div>}
-            <div>
-                <label>Payment:</label>
-                <input
-                    name="payment"
-                    placeholder="Payment"
-                    value={state.payment}
-                    onChange={handleChange}
-                    disabled="true"
-                />
-                <div style={{ fontSize: 12, color: "red" }}>
-                    {state.lastnameError}
-                </div>
-            </div>
 
-            <div>
-                <div>
+    onChangeHandler = (event) => {
+        this.setState(prevState => ({
+            postDetails: {
+                ...prevState.postDetails,
+                [event.target.name]: event.target.value
+            }
+        }))
+    }
+    /* onClickHandler = () => {
+        let url = 'http://127.0.0.1:8000/api/offerhelp/createPost'
+        axios.post(url, this.state.postDetails, { headers: { 'Authorization': "Bearer " + localStorage.getItem("token") } })
+            .then(response => {
+                console.log(response)
+            })
+            .catch(error => {
+                console.log(error.response.data)
+            })
+    } */
 
-                <Multiselect 
-                    options={cityOptions}
-                    displayValue='city'
-                    onSelect={onSelect}></Multiselect>
-                    
+    render() {
+        const style = {
+            width: '100%',
+            resize: 'none',
+            padding: '9px',
+            boxSizing: 'border-box',
+            fontSize: '15px'
+        };
+        const { userDetailsNotFound, userDetails, services, cities, priceBorder, unauthenticated } = this.state
+        return (
+            <Container width="50%" >
+                {unauthenticated ? <Error404 /> : <OfferHelpForm userDetails={userDetails} services={services} cities={cities} />}
 
-                {/* //Job dropdown */}
-                {/* <label for="cities">Choose a car:</label>
-                <select name='optionCity' onChange={handleChange}>
-                    <option value="Prishtinë">Prishtinë</option>
-                    <option value="Prizren">Prizren</option>
-                    <option value="Ferizaj">Ferizaj</option>
-                    <option value="Pejë">Pejë</option>
-                    <option value="Gjakovë">Gjakovë</option>
-                    <option value="Gjilan">Gjilan</option>
-                    <option value="Podujevë">Podujevë</option>
-                    <option value="Mitrovicë">Mitrovicë</option>
-                    <option value="Vushtrri">Vushtrri</option>
-                    <option value="Suharekë">Suharekë</option>
-                    <option value="Lipjan">Lipjan</option>
-                    <option value="Rahovec">Rahovec</option>
-                    <option value="Malishevë">Malishevë</option>
-                    <option value="Skenderaj">Skenderaj</option>
-                    <option value="Viti">Viti</option>
-                    <option value="Decan">Decan</option>
-                    <option value="Istog">Istog</option>
-                    <option value="Klinë">Klinë</option>
-                    <option value="Kamenicë">Kamenicë</option>
-                    <option value="Dragash">Dragash</option>
-                    <option value="Fushë Kosovë">Fushë Kosovë</option>
-                    <option value="Shtime">Shtime</option>
-                    <option value="Obilic">Obilic</option>
-                </select> */}
-                </div>
-            </div>
-
-
-            <div>
-
-                {/* //Job dropdown */}
-              
-
-                <select name="job_id" onChange={handleChange}>
-                    {state.jobs ? state.jobs.map(job => <option value={job.id}>{job.service_name}</option>) : null}
-                    {/* {this.state.jobs.map(job => (
-                        <option
-                            key={job.value}
-                            value={job.value}
-                        >{job.display}
-                        </option>
-                    ))} */}
-                </select>
-            </div>
-
-            <textarea name="description" value={state.description} onChange={handleChange} rows="4" cols="100" placeholder='Description'>
-
-            </textarea>
-            <div>
-                <label>Price:</label>
-                <input
-                    type='number'
-                    name="price"
-                    placeholder="Price"
-                    value={state.price}
-                    onChange={handleChange}
-                />
-                <div style={{ fontSize: 12, color: "red" }}>
-                    {state.lastnameError}
-                </div>
-            </div>
-            <button onClick={handleSubmit} className='submit-button' type="submit" >Submit</button>
-        </form></div>
+            </Container>
         )
+    }
 }
 
-export default OfferHelp
+export default offerHelp
 
 
-{/* <button onClick={(e) => { this.handle(e) }}>nameee</button> */ }
+

@@ -29,8 +29,6 @@ class SeekHelp extends React.Component {
             service: '',
             posts: [],
             postNotFound: false,
-            citiesOption: [],
-            servicesOption: [],
             selectedCities: '',
             selectedServices: '',
             price: ''
@@ -47,35 +45,12 @@ class SeekHelp extends React.Component {
                 } else {
 
                     response.data.map(item => {
-                        this.state.citiesOption.push({ 'value': item.id, 'label': item.city_name })
+                        this.state.cities.push({ 'value': item.id, 'label': item.city_name })
                     })
-
-
-                    this.setState({ cities: this.state.cities.concat(this.state.citiesOption) });
-
-                    /* this.setState({
-                        cities: this.state.cities
-                    }) */
-
-                    /* console.log(this.state.citiesOption)
-                    this.setState({
-                        cities: ""
-
-                    }) */
                 }
             })
             .catch(error => console.log(error))
 
-
-        /* this.state.cities.map(item => {
-            
-            this.setState({
-                citiesOption: this.state.citiesOption.concat({
-                    value: item.id,
-                    label: item.city_name
-                })
-            })
-        }) */
 
         axios.get('http://127.0.0.1:8000/api/services')
             .then(response => {
@@ -84,12 +59,8 @@ class SeekHelp extends React.Component {
                 } else {
 
                     response.data.map(item => {
-                        this.state.servicesOption.push({ 'value': item.id, 'label': item.service_name })
+                        this.state.services.push({ 'value': item.id, 'label': item.service_name })
                     })
-
-
-                    this.setState({ services: this.state.services.concat(this.state.servicesOption) });
-
                 }
             })
             .catch(error => console.log(error))
@@ -153,36 +124,31 @@ class SeekHelp extends React.Component {
             .catch(error => {
                 this.setState({ postNotFound: true })
             })
-
-        /* alert("Selected City : " + this.state.location + ", Selected Service : " + this.state.service) */
-
     }
 
 
     handleOnChange = (selected) => {
-        /* let value = Array.from(selected.target.selectedOptions, option => option.value) */
-        /*   let selected
-          selected.map(item => console.log(item.label)) */
 
     }
 
 
     render() {
-        const { cities, emptyCity, services, emptyService, posts, postNotFound, citiesOption, servicesOption } = this.state
+        const { cities, emptyCity, services, emptyService, posts, postNotFound } = this.state
         return (
             <Container fluid>
-                <Row className="mx-auto my-2 pb-5 pt-2 text-center" >
+                <Row className="mx-auto my-2 pb-5 pt-2 text-left" >
                     <Col xs={12} md={4}><Select
                         placeholder="Kërko qytetin"
-                        options={citiesOption}
+                        options={cities}
                         isMulti="true"
                         name="cities"
                         onChange={this.cityOnChangeHandler}
                     ></Select></Col>
+
                     <Col xs={12} md={4}><Select
                         /* inputValue="Zgjidh" */
                         placeholder="Kërko servisin"
-                        options={servicesOption}
+                        options={services}
                         isMulti="true"
                         name="services"
                         onChange={this.serviceOnChangeHandler}
@@ -208,7 +174,7 @@ class SeekHelp extends React.Component {
                         //holder.js/100px180
                         posts.map(item => (
                             <Col sm="6" md="4" lg="3" className="my-2">
-                                <Card style={{ width: '18rem' }}>
+                                <Card key={item.id} style={{ width: '18rem' }}>
                                     <Card.Img variant="top" src={Dizajner} width="100" height="180" />
 
                                     <Card.Body>

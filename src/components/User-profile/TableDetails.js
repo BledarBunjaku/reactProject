@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Table, Button } from 'react-bootstrap'
 import UpdateDetails from './UpdateDetails'
 
+
 function TableDetails({ userDetails }) {
     const [detailsForm, setDetailsForm] = useState(false)
 
@@ -35,7 +36,7 @@ function TableDetails({ userDetails }) {
                 </tr>
                 <tr>
                     <th>Email</th>
-                    <td>{userDetails.email}</td>
+                    <td>{localStorage.getItem('email')}</td>
                 </tr>
                 <tr>
                     <th>Numri i telefonit</th>

@@ -105,7 +105,7 @@ export default class ValiationForm extends React.Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    console.log('data', this.state)
+    //   console.log('data', this.state)
     if (this.state.submitEmail) {
       const isValid = this.validateEmail();
       if (isValid) {
@@ -143,7 +143,7 @@ export default class ValiationForm extends React.Component {
 
     if (this.state.submitCode) {
       event.preventDefault();
-      console.log(this.state)
+      // console.log(this.state)
       const isValid = this.validateCode()
       if (isValid) {
         let userData = {};
@@ -151,8 +151,9 @@ export default class ValiationForm extends React.Component {
         userData.password = this.state.password;
         axios.post(`http://127.0.0.1:8000/api/register`, userData)
           .then(response => {
-            console.log('code-correct-response', response)
+            //       console.log('code-correct-response', response)
             localStorage.setItem("token", response.data.token)
+            localStorage.setItem('email', response.data.email)
           })
 
       }

@@ -13,6 +13,7 @@ import About from '../components/About/about'
 import Footer from '../components/Layout/Footer/footer'
 import UserProfile from '../components/User-profile/userProfile'
 import SeekHelp from "../components/Seek-help/seekHelp";
+import Error404 from "../components/Errors/Error404";
 import axios from 'axios'
 import OfferHelp from '../components/Offer_help/offerHelp'
 import { createStore } from 'redux'
@@ -37,6 +38,7 @@ const App = () => {
 
 
 
+
     let getToken = (token) => {
         // let config = {
         //     headers: { Authorization: "Bearer " + token }
@@ -53,7 +55,9 @@ const App = () => {
     // }
 
 
+
     useEffect(() => {
+
 
         setUserData(localStorage.getItem("token"))
         // axios.get(`user`, tokenUse)
@@ -76,16 +80,7 @@ const App = () => {
         //     })
         //     .catch(error => { console.log('errorrCatch', error) })
     }
-    const setlocalstorage = () => {
-        localStorage.setItem("name", "10")
-        console.log(localStorage.getItem("name"))
-    }
-    const deletelocalstorage = () => {
-        localStorage.clear()
-        console.log("cleared")
-    }
 
-    console.log('datasssssssssssssssss', tokenUse)
 
     return (
         <Provider store={store}><Router>
@@ -101,14 +96,12 @@ const App = () => {
                     <SeekHelp />
                 </Route>
                 <Route path="/offer">
-                    <OfferHelp userData={userData} token={tokenUse} />
+                    <OfferHelp token={tokenUse} />
                 </Route>
                 {userData ? <Route path="/profile"  >
-                    <UserProfile userData={userData} />
-                </Route> :
-                    <Route path="/profile">
-                        <h1>404 Not found!</h1>
-                    </Route>}
+                    <UserProfile />
+                </Route> : <Error404 />
+                }
             </Switch>
             <Footer />
         </Router>
