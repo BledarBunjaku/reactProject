@@ -5,7 +5,7 @@ import Info from '../Info/Info'
 import Accordian from '../Accordian/Accordian'
 import Card from '../Card/Card'
 import Section from '../Section/section'
-import Scroll from '../Scroll/scroll'
+import Scroll from '../Scroll/Scroll'
 
 
 
@@ -17,7 +17,7 @@ const Home = ({ name, germ }) => {
         <Card />
         <Section />
         <Scroll />
-       
+
     </main>
 }
 export default Home

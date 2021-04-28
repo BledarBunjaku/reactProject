@@ -35,7 +35,7 @@ class UpdateDetails extends Component {
 
     componentDidMount() {
 
-        console.log(this.state.userDetails)
+        //console.log(this.state.userDetails)
         axios.get('http://127.0.0.1:8000/api/genders')
             .then(response => {
                 this.setState({ genders: response.data })
@@ -138,7 +138,7 @@ class UpdateDetails extends Component {
 
     }
     handleSumbit = (event) => {
-
+        event.preventDefault()
 
 
 
@@ -158,13 +158,13 @@ class UpdateDetails extends Component {
         let url = 'http://127.0.0.1:8000/api/user/details'
         axios.patch(url, response, { headers: { 'Authorization': "Bearer " + localStorage.getItem("token") } })
             .then(response => {
-                console.log(response)
+                //   console.log('updateDetails: ', response)
             })
             .catch(error => {
                 console.log(error.response.data)
             })
 
-
+        this.setState({ show: false })
 
     }
 
@@ -196,7 +196,7 @@ class UpdateDetails extends Component {
                             <Form.Control onChange={this.onInputChange} name="birthday" required type="text" placeholder="Plotëso vitin e lindjes" value={userDetails.birthday} />
 
                             <Form.Label>Email:</Form.Label>
-                            <Form.Control onChange={this.onInputChange} name="email" required type="email" placeholder="Plotëso emailin" value={userDetails.email} />
+                            <Form.Control onChange={this.onInputChange} disabled name="email" required type="email" placeholder="Plotëso emailin" value={localStorage.getItem('email')} />
 
                             <Form.Label>Numri i telefonit:</Form.Label>
                             <Form.Control onChange={this.onInputChange} name="phone_number" required type="text" placeholder="Plotëso numrin e telefonit +383 XX XXX XXX" value={userDetails.phone_number} />

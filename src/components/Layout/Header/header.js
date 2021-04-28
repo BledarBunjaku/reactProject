@@ -17,14 +17,8 @@ const Header = (props) => {
     const [modal, setModal] = useState(false);
     const [expand, setExpand] = useState(true)
 
-    const expandArea = () => {
-        setExpand(false);
-    }
 
-    const removeToken = () => {
-        props.getToken("");
-        // props.handleUserData();
-    }
+
 
     const showModal = (e = "") => {
         if (e) { e.preventDefault(); }
@@ -32,9 +26,6 @@ const Header = (props) => {
         setModal(!modal);
     }
 
-    let tokenDelete = () => {
-        localStorage.removeItem("token")
-    }
 
 
     return <div className='main-nav'> <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -54,10 +45,11 @@ const Header = (props) => {
                 <li className="nav-item px-3">
                     <Link to="/seek">Seek Help</Link>
                 </li>
-                <li className="nav-item px-3">
+                {props.userData ? <li className="nav-item px-3">
                     <Link to="/offer">Offer Help</Link>
                     {/* <a href='http://localhost:3000/offer'>offer</a> */}
-                </li>
+                </li> : null}
+
                 <li className="nav-item px-3">
                     <Link to="/about">About Us</Link>
                 </li>

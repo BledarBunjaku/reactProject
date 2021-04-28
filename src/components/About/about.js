@@ -6,7 +6,7 @@ import photo2 from '../../Images/photo2.jpg'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Accordian from '../Accordian/Accordian'
-import Scroll from '../Scroll/scroll'
+import Scroll from '../Scroll/Scroll'
 
 
 
@@ -16,7 +16,7 @@ const About = () => {
         <div className='about-wrapper'>
             <Info />
             <Row className="justify-content-center py-2 ">
-            <h1 className="display-6 font-weight-light text-body">Our Work</h1>
+                <h1 className="display-6 font-weight-light text-body">Our Work</h1>
             </Row>
             <div className='our-work'>
                 <div className='section-work'>
@@ -44,19 +44,19 @@ const About = () => {
                     </section>
                 </div>
             </div>
-           
-          
-                
-                
+
+
+
+
             <Row className="justify-content-center py-2">
-           
-            <Accordian />
-            <Scroll />
+
+                <Accordian />
+                <Scroll />
             </Row>
-          
-            </div>
-            
-       
+
+        </div>
+
+
     )
 
 }
